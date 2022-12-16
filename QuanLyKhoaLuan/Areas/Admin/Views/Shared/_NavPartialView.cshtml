@@ -1,0 +1,112 @@
+﻿
+@{
+    var session = (QuanLyKhoaLuan.Common.UserLogin)Session[QuanLyKhoaLuan.Common.CommonConstants.USER_SESSION];
+}
+
+<div class="quixnav">
+    <div class="quixnav-scroll">
+        <ul class="metismenu" id="menu">
+
+            @if (session.code_role == "admin")
+            {
+                <li>
+                    <a class="" href="@Url.Action("Index", "Home")">
+                        <i class="icon fa-solid fa-table-columns"></i><span class="">Bảng điều khiển</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+
+                        <i class="icon fa-solid fa-diagram-project"></i><span class="nav-text">Quản lý đào tạo</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Khoa</a></li>
+                        <li><a href="~/assets/Admin/index2.html">Ngành</a></li>
+                        <li><a href="~/assets/Admin/index2.html">Niên khóa</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon icon-single-04"></i><span class="nav-text">Quản lý giảng viên</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Giảng viên</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon fa-solid fa-user"></i><span class="nav-text">Quản lý sinh viên</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Sinh viên</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon fa-regular fa-file-word"></i><span class="nav-text">Quản lý khóa luận</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Đề tài</a></li>
+                        <li><a href="~/assets/Admin/index.html">Khóa luận</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon fa-solid fa-users"></i><span class="nav-text">Quản lý hội đồng</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Hội đồng</a></li>
+                    </ul>
+                </li>
+
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon fa-solid fa-chart-simple"></i><span class="nav-text">Thống kê</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Thống kê theo điểm</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon fa-solid fa-gear"></i><span class="nav-text">Quản lý hệ thống</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/Admin/Roles/Index">Quyền</a></li>
+                        <li><a href="~/Admin/Users">Quản trị viên</a></li>
+                    </ul>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon icon-single-04"></i><span class="nav-text">Quản lý giảng viên</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Giảng viên</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                        <i class="icon fa-solid fa-user"></i><span class="nav-text">Quản lý sinh viên</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="~/assets/Admin/index.html">Sinh viên</a></li>
+                    </ul>
+                </li>
+
+            }
+
+
+        </ul>
+    </div>
+</div>

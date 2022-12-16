@@ -1,0 +1,28 @@
+﻿
+/*Admin*/
+img.avatar_user_index {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+}
+
+
+img.col-12.avatar-upload {
+    height: 350px;
+}
+
+img.avatar-info.img-fluid.rounded-circle {
+    width: 150px;
+    height: 150px;
+}
+
+img.avatar-header {
+    height:40px !important;
+    width: 40px !important;
+
+}
+
+li.nav-item.dropdown.header-profile {
+    font-size: 17px;
+    font-weight: 400;
+}

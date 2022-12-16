@@ -1,0 +1,19 @@
+﻿body {
+    color:black;
+}
+
+label.error {
+    color: red
+}
+
+#checkUsername {
+    color:red
+}
+
+.text-table-color {
+    color: black;
+}
+
+td.pagination-none-boder {
+    border: none;
+}

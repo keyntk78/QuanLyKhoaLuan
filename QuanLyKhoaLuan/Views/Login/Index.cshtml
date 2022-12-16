@@ -1,0 +1,78 @@
+﻿@model QuanLyKhoaLuan.ModelViews.LoginModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Đăng nhập</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/Admin/images/favicon.png">
+    <link href="~/assets/Admin/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="h-100">
+    <div class="authincation h-100">
+        <div class="container-fluid h-100">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-4">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <h4 class="text-center mb-4">Đăng Nhập</h4>
+                                    @using (Html.BeginForm("Login", "Login", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                <div class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <label><strong>Tên đăng nhập</strong></label>
+                                        @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><strong>Mật khẩu</strong></label>
+                                        @Html.EditorFor(model => model.password, new { htmlAttributes = new { @class = "form-control", type = "password" } })
+                                        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="form-group center">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+                                    </div>
+                                </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="~/assets/Admin/vendor/global/global.min.js"></script>
+    <script src="~/assets/Admin/js/quixnav-init.js"></script>
+    <script src="~/assets/Admin/js/custom.min.js"></script>
+
+</body>
+
+</html>

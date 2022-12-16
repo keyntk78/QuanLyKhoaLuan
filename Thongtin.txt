@@ -1,0 +1,7 @@
+Các Package đã dùng:
+-- Install-Package EntityFramework
+Hướng phát triển:
+--Code First
+Công cụ, công nghệ, tool sử dụng
+--Fontend: Ajax, jquery, bootstrap, sử dụng template
+--
