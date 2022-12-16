@@ -129,7 +129,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\School_yearController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Common\CommonConstants.cs" />
     <Compile Include="Common\UserLogin.cs" />
@@ -151,6 +153,10 @@
     <Compile Include="Migrations\202212150743498_CreateNewTable_1.cs" />
     <Compile Include="Migrations\202212150743498_CreateNewTable_1.designer.cs">
       <DependentUpon>202212150743498_CreateNewTable_1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212161346485_validate_department.cs" />
+    <Compile Include="Migrations\202212161346485_validate_department.designer.cs">
+      <DependentUpon>202212161346485_validate_department.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Department.cs" />
@@ -6291,7 +6297,17 @@
     <Content Include="Areas\Admin\Views\Shared\_NavPartialView.cshtml" />
     <Content Include="Areas\Admin\Views\Shared\_HeaderPartialView.cshtml" />
     <Content Include="Areas\Admin\Views\Home\Info.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Departments\_DetailPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\School_year\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\School_year\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\School_year\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\School_year\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\School_year\Index.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\Controller\departmentController.js" />
     <Content Include="Scripts\Controller\userController.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -6347,6 +6363,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202212150743498_CreateNewTable_1.resx">
       <DependentUpon>202212150743498_CreateNewTable_1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212161346485_validate_department.resx">
+      <DependentUpon>202212161346485_validate_department.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
