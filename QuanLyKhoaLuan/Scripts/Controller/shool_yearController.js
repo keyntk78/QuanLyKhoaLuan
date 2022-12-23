@@ -1,7 +1,6 @@
-﻿var departmentController = {
+﻿var shool_yearController = {
     init: function () {
-
-        departmentController.registerEvent();
+        shool_yearController.registerEvent();
     },
     registerEvent: function () {
 
@@ -9,7 +8,7 @@
             var keywork = $('#keywork').val();
             pageSize = $('#pageSize').val();
 
-            departmentController.loadData(null, pageSize, keywork);
+            shool_yearController.loadData(null, pageSize, keywork);
         });
 
         $('body').on('click', '#btnSearch', function () {
@@ -17,15 +16,14 @@
 
             var keywork = $('#keywork').val();
 
-            departmentController.loadData(null, pageSize, keywork);
-        })
+            shool_yearController.loadData(null, pageSize, keywork);
+        });
 
 
         $('body').on('click', '.btnDelete', function (e) {
 
 
             var id = $(this).data('id');
-
 
             swal({
                 title: "Bạn có chắc xóa!",
@@ -36,50 +34,52 @@
                 cancelButtonText: "Đóng"
             }).then((result) => {
                 if (result.value) {
-                    departmentController.Delete(id)
+                    shool_yearController.Delete(id)
                 }
             });
         });
 
 
-
         $('body').on('click', '.btnDetail', function (e) {
             var id = $(this).data('id');
-            departmentController.Detail(id);          
+            shool_yearController.Detail(id);
         });
 
-
         pageSize = $('#pageSize').val();
-        departmentController.loadData(null, pageSize, "");
+        shool_yearController.loadData(null, pageSize, "");
     },
-
     loadData: function (page, pageSize, keywork) {
         $.ajax({
-            url: '/Admin/Departments/GetDepartmentsData',
+            url: '/Admin/School_year/GetShoolYearData',
             type: 'GET',
+  /*          data: { page: page, pageSize: pageSize, keywork: keywork },*/
             data: { page: page, pageSize: pageSize, keywork: keywork },
             success: function (res) {
+
                 if (res.TotalItem >= 0) {
                     var item = res.Data;
                     var html = "";
                     for (let i = 0; i < res.Data.length; i++) {
-                        var date = departmentController.getDateIfDate(item[i].founding_date);
+                        var date_start = shool_yearController.getDateIfDate(item[i].start_date);
+                        var date_end = shool_yearController.getDateIfDate(item[i].end_date);
+
 
                         html += "<tr>";
                         html += ` <td>${i + 1}</td>`;
-                        html += ` <td>${item[i].code}</td>`;
                         html += ` <td>${item[i].name}</td>`;
-                        html += ` <td>${date}</td>`;
+                        html += ` <td>${date_start}</td>`;
+                        html += ` <td>${date_end}</td>`;
+
                         html += `<td>`;
-                        html += `<button data-id="${item[i].department_id}" class="btn btn-danger btnDelete" title="Xóa" ><i class="fa-solid fa-trash"></i></button> | `
-                        html += `<a  href="/Admin/Departments/Edit/${item[i].department_id}"  class="btn btn-success btnEdit" title="Cập nhật"><i class="fa-solid fa-pen-to-square"></i></a> | 
-                                <button data-id="${item[i].department_id}" class="btn btn-info btnDetail" data-toggle="modal" data-target="#exampleModal" title="Xem chi tiết" ><i class="fa-solid fa-eye"></i></button>
+                        html += `<button data-id="${item[i].school_year_id}" class="btn btn-danger btnDelete" title="Xóa" ><i class="fa-solid fa-trash"></i></button> | `
+                        html += `<a  href="/Admin/School_year/Edit/${item[i].school_year_id}"  class="btn btn-success btnEdit" title="Cập nhật"><i class="fa-solid fa-pen-to-square"></i></a> | 
+                                <button data-id="${item[i].school_year_id}" class="btn btn-info btnDetail" data-toggle="modal" data-target="#exampleModal" title="Xem chi tiết" ><i class="fa-solid fa-eye"></i></button>
                                 </td >`
                         html += `</tr>`;
                     }
                 }
                 $('#show_data').html(html);
-                departmentController.Pagination(res.CurrentPage, res.NumberPage, res.PageSize);
+                shool_yearController.Pagination(res.CurrentPage, res.NumberPage, res.PageSize);
             }
         })
     },
@@ -93,19 +93,19 @@
         if (numberpage > 0) {
             var str = `<nav aria-label="Page navigation example"><ul class="pagination">`;
             if (currentPage != 1) {
-                str += ` <li class="page-item"><a class="page-link" onclick="departmentController.NextPage(${currentPage - 1}, ${pageSize})" href="javascript:void(0);"><i class="fa-solid fa-chevron-left"></i></a></li>`;
+                str += ` <li class="page-item"><a class="page-link" onclick="shool_yearController.NextPage(${currentPage - 1}, ${pageSize})" href="javascript:void(0);"><i class="fa-solid fa-chevron-left"></i></a></li>`;
             }
             for (let i = 1; i <= numberpage; i++) {
                 if (currentPage === i) {
                     str += `<li class="page-item active"><a class="page-link" href="javascript:void(0);">${i}</a></li>`;
                 } else {
 
-                    str += `<li class="page-item"><a class="page-link" onclick="departmentController.NextPage(${i}, ${pageSize})" href="javascript:void(0);">${i}</a></li>`;
+                    str += `<li class="page-item"><a class="page-link" onclick="shool_yearController.NextPage(${i}, ${pageSize})" href="javascript:void(0);">${i}</a></li>`;
                 }
             }
 
             if (currentPage != numberpage) {
-                str += ` <li class="page-item"><a class="page-link" onclick="departmentController.NextPage(${currentPage + 1}, ${pageSize})" href="javascript:void(0);"><i class="fa-solid fa-chevron-right"></i></a></li>`;
+                str += ` <li class="page-item"><a class="page-link" onclick="shool_yearController.NextPage(${currentPage + 1}, ${pageSize})" href="javascript:void(0);"><i class="fa-solid fa-chevron-right"></i></a></li>`;
             }
             str += `</ul></nav>`;
             $('#pagination').html(str);
@@ -114,22 +114,23 @@
 
     NextPage: function (page, pageSize) {
         var keywork = $('#keywork').val();
-        departmentController.loadData(page, pageSize, keywork);
+        shool_yearController.loadData(page, pageSize, keywork);
 
     },
 
+
     Delete: function (id) {
         $.ajax({
-            url: "/Admin/Departments/Delete",
+            url: "/Admin/School_year/Delete",
             type: "POST",
             data: { id: id },
             success: function (res) {
                 if (res.Success) {
                     pageSize = $('#pageSize').val();
-                    departmentController.loadData(null, pageSize, "");
+                    shool_yearController.loadData(null, pageSize, "");
                     Swal.fire(
                         'Đã Xóa!',
-                        'Bạn đã xóa khoa thành công',
+                        ' Niên khóa đã xóa.',
                         'success'
                     )
                 } else {
@@ -145,22 +146,20 @@
 
     Detail: function (id) {
         $.ajax({
-            url: "/Admin/Departments/Detail",
+            url: "/Admin/School_year/Detail",
             type: "GET",
             data: { id: id },
             success: function (res) {
                 if (res.Success) {
-                    $('#code').text(res.Data.code);
                     $('#name').text(res.Data.name);
-                    $('#f-date').text(departmentController.getDateIfDate(res.Data.founding_date));
-                    $('#decs').text(res.Data.description);
+                    $('#start-date').text(shool_yearController.getDateIfDate(res.Data.start_date));
+                    $('#end-date').text(shool_yearController.getDateIfDate(res.Data.end_date));
                 } else {
                     alert("Có lỗi");
                 }
             }
         });
     },
-
 };
 
-departmentController.init();
+shool_yearController.init();

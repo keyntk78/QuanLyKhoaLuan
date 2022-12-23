@@ -1,5 +1,6 @@
-﻿@{
-    ViewBag.Title = "Danh sách niên khóa";
+﻿
+@{
+    ViewBag.Title = "Danh sách bộ môn";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -8,14 +9,14 @@
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Danh sách niên khóa</h4>
+                    <h4>Danh sách Bộ môn</h4>
                 </div>
             </div>
 
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
-                    <li class="breadcrumb-item active"><span href="#">Danh sách niên khóa</span></li>
+                    <li class="breadcrumb-item active"><span href="#">Danh sách Bộ môn</span></li>
                 </ol>
             </div>
         </div>
@@ -37,10 +38,18 @@
                     <div class="card-header">
                         <div class="col-sm-3 p-md-0">
                             <div class="welcome-text">
-                                <a href="@Url.Action("Create", "School_year")" class="btn btn-primary">Thêm niên khóa</a>
+                                <a href="@Url.Action("Create", "Majors")" class="btn btn-primary">Thêm bộ môn</a>
                             </div>
                         </div>
                         <div class="col-sm-8 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                            <select class="form-control col-5 mr-2" id="select_department_id">
+                                <option value="">--- Khoa ---</option>
+                                @foreach (var item in ViewBag.department)
+                                {
+                                    <option value="@item.department_id">@item.name</option>
+                                }
+
+                            </select>
                             <input type="text" class="form-control col-4 pl-2 mr-2" id="keywork" placeholder="Tìm kiếm ..." />
                             <button type="button" class="btn btn-primary" id="btnSearch">Tìm kiếm</button>
                         </div>
@@ -51,9 +60,9 @@
                                 <thead>
                                     <tr>
                                         <th>STT</th>
-                                        <th>Niên khóa</th>
-                                        <th>Thời gian bắt đầu</th>
-                                        <th>Thời gian kết thúc</th>
+                                        <th>Mã bộ môn</th>
+                                        <th>Tên bộ môn</th>
+                                        <th>Khoa</th>
                                         <th>Chức năng</th>
                                     </tr>
 
@@ -88,6 +97,7 @@
     </div>
 </div>
 
+
 @{
     Html.RenderPartial("_DetailPartialView");
 }
@@ -100,5 +110,5 @@
     <script src="~/Scripts/jquery.validate-vsdoc.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-    <script src="~/Scripts/Controller/shool_yearController.js?t=@DateTime.Now"></script>
+    <script src="~/Scripts/Controller/majorController.js?t=@DateTime.Now"></script>
 }

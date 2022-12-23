@@ -10,30 +10,51 @@ using QuanLyKhoaLuan.Models;
 
 namespace QuanLyKhoaLuan.Areas.Admin.Controllers
 {
-    public class School_yearController : Controller
+    public class School_yearController : BaseController
     {
         private QuanLyKhoaLuanDBContext db = new QuanLyKhoaLuanDBContext();
 
         // GET: Admin/School_year
         public ActionResult Index()
         {
-            return View(db.School_years.ToList());
+            if (TempData["status"] != null)
+            {
+                ViewBag.Status = TempData["status"].ToString();
+                TempData.Remove("status");
+            }
+            return View();
         }
 
-        // GET: Admin/School_year/Details/5
-        public ActionResult Details(Guid? id)
+        //int? page, int? pageSize, string keywork
+        public ActionResult GetShoolYearData(int? page, int? pageSize, string keywork)
         {
-            if (id == null)
+            db.Configuration.ProxyCreationEnabled = false;
+            var results = db.School_years.OrderByDescending(d => d.updated_at).ToList();
+
+
+            if (!string.IsNullOrEmpty(keywork))
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                results = results.Where(u => u.name.ToLower().Contains(keywork.Trim().ToLower()))
+                    .ToList();
             }
-            School_year school_year = db.School_years.Find(id);
-            if (school_year == null)
+
+            var _pageSize = pageSize ?? 5;
+            var pageIndex = page ?? 1;
+
+            var totalPage = results.Count();
+            var numberPage = Math.Ceiling((float)totalPage / _pageSize);
+            results = results.Skip((pageIndex - 1) * _pageSize).Take(_pageSize).ToList();
+
+            return Json(new
             {
-                return HttpNotFound();
-            }
-            return View(school_year);
+                Data = results,
+                TotalItem = results.Count,
+                CurrentPage = pageIndex,
+                NumberPage = numberPage,
+                PageSize = _pageSize,
+            }, JsonRequestBehavior.AllowGet);
         }
+
 
         // GET: Admin/School_year/Create
         public ActionResult Create()
@@ -41,9 +62,7 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             return View();
         }
 
-        // POST: Admin/School_year/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "school_year_id,name,start_date,end_date,created_at,updated_at")] School_year school_year)
@@ -51,15 +70,77 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 school_year.school_year_id = Guid.NewGuid();
+                school_year.updated_at = DateTime.Now;
+                school_year.created_at = DateTime.Now;
                 db.School_years.Add(school_year);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var result = db.SaveChanges();
+                if (result != 0)
+                {
+                    TempData["status"] = "Thêm niên khóa thành công!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Thêm niên khóa thất bại");
+                }
             }
 
             return View(school_year);
         }
 
-        // GET: Admin/School_year/Edit/5
+
+
+        // xóa 
+        [HttpPost]
+        public ActionResult Delete(Guid id)
+        {
+
+            School_year school_Year = db.School_years.Find(id);
+            db.School_years.Remove(school_Year);
+            var rs = db.SaveChanges();
+
+            if (rs > 0)
+            {
+                return Json(new
+                {
+                    Success = true
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    Success = false
+                });
+            }
+        }
+
+        public ActionResult Detail(Guid id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            School_year school_Year = db.School_years.Find(id);
+            if (school_Year != null)
+            {
+                return Json(new
+                {
+                    Data = school_Year,
+                    Success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new
+            {
+                Success = false
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
@@ -74,55 +155,34 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             return View(school_year);
         }
 
-        // POST: Admin/School_year/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+       
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "school_year_id,name,start_date,end_date,created_at,updated_at")] School_year school_year)
+        public ActionResult Edit([Bind(Include = "school_year_id,name,start_date,end_date,created_at,updated_at")] School_year model)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(school_year).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(school_year);
-        }
 
-        // GET: Admin/School_year/Delete/5
-        public ActionResult Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            School_year school_year = db.School_years.Find(id);
-            if (school_year == null)
-            {
-                return HttpNotFound();
-            }
-            return View(school_year);
-        }
+                School_year school_Year = db.School_years.Find(model.school_year_id);
+                school_Year.name = model.name;
+                school_Year.start_date = model.start_date;
+                school_Year.end_date = model.end_date;
+                school_Year.updated_at = DateTime.Now;
 
-        // POST: Admin/School_year/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
-        {
-            School_year school_year = db.School_years.Find(id);
-            db.School_years.Remove(school_year);
-            db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
+                db.Entry(school_Year).State = EntityState.Modified;
+                var rs = db.SaveChanges();
+                if (rs != 0)
+                {
+                    TempData["status"] = "Cập nhật niên khóa thành công!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Cập nhật niên khóa  thất bại");
+                }
             }
-            base.Dispose(disposing);
+            return View(model);
         }
     }
 }

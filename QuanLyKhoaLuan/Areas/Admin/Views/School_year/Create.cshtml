@@ -1,68 +1,103 @@
 ﻿@model QuanLyKhoaLuan.Models.School_year
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Thêm niên khóa";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h2>Create</h2>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>School_year</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+<<div class="content-body">
+    <div class="container-fluid">
+
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Thêm niên khóa</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Bảng điều khiển</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "School_year")">Danh sách niên khóa</a></li>
+                    <li class="breadcrumb-item active">Thêm niên khóa</li>
+                </ol>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.start_date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.start_date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.start_date, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.end_date, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.end_date, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.end_date, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                            <div class="col-sm-12 p-md-0 justify-content-sm-star mt-2 mt-sm-0 d-flex">
+                                <h4>Thông tin niên khóa</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.created_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.created_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.created_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                            <div class="form-horizontal">
+                                <div class="form-group">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="form-group">
+                                    <label class="pl-4">Niên khóa <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", id="name", placeholder="Nhập niên khóa ..." } })
+                                        @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.updated_at, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.updated_at, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.updated_at, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                                <div class="form-group">
+                                    <label class="pl-4">Thời gian bắt đầu <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.start_date, new { htmlAttributes = new { @class = "form-control", type = "Date", id="date-start" } })
+                                        @Html.ValidationMessageFor(model => model.start_date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                                <div class="form-group">
+                                    <label class="pl-4">Thời gian kết thúc <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.end_date, new { htmlAttributes = new { @class = "form-control", type = "Date", id="date-end" } })
+                                        @Html.ValidationMessageFor(model => model.end_date, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card p-bt90">
+                        <div class="card-body">
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10 text-center">
+                                    <input type="submit" value="Thêm" class="btn btn-primary" />
+                                    <input type="button" id="btn-reset" value="Reset" class="btn btn-danger ml-3" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section scripts {
+    <script>
+        $(function () {
+            // đăng ký sự kiên click
+            $('#btn-reset').click(function () {
+                $("#name").val("");
+                $("#date-end").val("");
+                $("#date-start").val("");
+            });
+        });
+    </script>
+}

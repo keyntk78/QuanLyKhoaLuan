@@ -30,3 +30,16 @@ li.nav-item.dropdown.header-profile {
 .p-bt90 {
     padding: 30px;
 }
+
+.text-red{
+    color:red;
+}
+
+img.img-detail-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

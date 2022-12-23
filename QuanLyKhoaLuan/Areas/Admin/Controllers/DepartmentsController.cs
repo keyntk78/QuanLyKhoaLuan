@@ -27,7 +27,7 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         }
 
 
-        //int? page, int? pageSize, string keywork, bool? active
+       
         public ActionResult GetDepartmentsData(int? page, int? pageSize, string keywork)
         {
             db.Configuration.ProxyCreationEnabled = false;

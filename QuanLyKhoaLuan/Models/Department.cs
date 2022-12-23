@@ -22,7 +22,7 @@ namespace QuanLyKhoaLuan.Models
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
-        public Nullable<System.DateTime> founding_date { get; set; }
+        public DateTime founding_date { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
     }

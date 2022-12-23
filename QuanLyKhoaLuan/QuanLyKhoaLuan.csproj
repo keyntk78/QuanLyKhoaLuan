@@ -131,6 +131,8 @@
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\LecturersController.cs" />
+    <Compile Include="Areas\Admin\Controllers\MajorsController.cs" />
     <Compile Include="Areas\Admin\Controllers\School_yearController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Common\CommonConstants.cs" />
@@ -158,7 +160,20 @@
     <Compile Include="Migrations\202212161346485_validate_department.designer.cs">
       <DependentUpon>202212161346485_validate_department.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202212170732199_datime_foundingdat.cs" />
+    <Compile Include="Migrations\202212170732199_datime_foundingdat.designer.cs">
+      <DependentUpon>202212170732199_datime_foundingdat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212171424014_AddtableClass.cs" />
+    <Compile Include="Migrations\202212171424014_AddtableClass.designer.cs">
+      <DependentUpon>202212171424014_AddtableClass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212230210053_chinhsuabangclass.cs" />
+    <Compile Include="Migrations\202212230210053_chinhsuabangclass.designer.cs">
+      <DependentUpon>202212230210053_chinhsuabangclass.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Department.cs" />
     <Compile Include="Models\Lecturer.cs" />
     <Compile Include="Models\Major.cs" />
@@ -6302,12 +6317,22 @@
     <Content Include="Areas\Admin\Views\Departments\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Departments\_DetailPartialView.cshtml" />
     <Content Include="Areas\Admin\Views\School_year\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\School_year\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\School_year\Details.cshtml" />
     <Content Include="Areas\Admin\Views\School_year\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\School_year\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\School_year\_DetailPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\Majors\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Majors\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Majors\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Majors\_DetailPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\Lecturers\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Lecturers\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Lecturers\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Lecturers\_DetailPartialView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Controller\departmentController.js" />
+    <Content Include="Scripts\Controller\lecturersController.js" />
+    <Content Include="Scripts\Controller\majorController.js" />
+    <Content Include="Scripts\Controller\shool_yearController.js" />
     <Content Include="Scripts\Controller\userController.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -6339,7 +6364,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Views\Base\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -6366,6 +6390,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202212161346485_validate_department.resx">
       <DependentUpon>202212161346485_validate_department.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212170732199_datime_foundingdat.resx">
+      <DependentUpon>202212170732199_datime_foundingdat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212171424014_AddtableClass.resx">
+      <DependentUpon>202212171424014_AddtableClass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212230210053_chinhsuabangclass.resx">
+      <DependentUpon>202212230210053_chinhsuabangclass.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

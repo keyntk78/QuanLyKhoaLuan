@@ -30,12 +30,15 @@ namespace QuanLyKhoaLuan.Models
         [Range(0, 10)]
         public double gpa { get; set; }
         public System.Guid user_id { get; set; }
-        public System.Guid major_id { get; set; }
+     
+        public System.Guid class_id { get; set; }
+
         public System.Guid school_year_id { get; set; }
         public Nullable<System.DateTime> created_at { get; set; }
         public Nullable<System.DateTime> updated_at { get; set; }
         public virtual User User { get; set; }
-        public virtual Major Major { get; set; }
+        public virtual Class Class { get; set; }
+
         public virtual School_year School_year { get; set; }
     }
 }
