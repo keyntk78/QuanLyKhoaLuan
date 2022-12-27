@@ -1,42 +1,148 @@
-﻿<!DOCTYPE html>
-<html>
+﻿
+<!DOCTYPE html>
+
+<html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/Admin/images/favicon.png">
+    <link href="~/assets/Admin/vendor/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <link href="~/assets/Admin/vendor/chartist/css/chartist.min.css" rel="stylesheet">
+    <link href="~/assets/Admin/css/style.css" rel="stylesheet">
+    <link href="~/assets/Admin/css/StyleCustoms.css" rel="stylesheet" />
+    <link href="~/assets/Admin/vendor/sweetalert2/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!--- fontawesome -->
+    <link href="~/assets/fontawesome-free-6.2.1-web/css/fontawesome.css" rel="stylesheet">
+    <link href="~/assets/fontawesome-free-6.2.1-web/css/brands.css" rel="stylesheet">
+    <link href="~/assets/fontawesome-free-6.2.1-web/css/solid.css" rel="stylesheet">
+    <link href="~/Content/Style.css?t=@DateTime.Now" rel="stylesheet" />
+    @*<link href="~/Content/Site.css?t=@DateTime.Now" rel="stylesheet" />
+        @Scripts.Render("~/bundles/modernizr")*@
 </head>
+
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" title="more options">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
+    <div id="main-wrapper">
+
+        <div class="nav-header">
+            <a href="@Url.Action("Index", "PageStudent")" class="brand-logo">
+                <img class="logo" src="~/Uploads/Images/logo.png" />
+                <h1 class="title-logo">HỆ THỐNG QUẢN LÝ KHÓA LUẬN TỐT NGHIỆP</h1>
+            </a>
+        </div>
+
+        @{
+            Html.RenderPartial("_HeaderPartialView");
+        }
+
+        <div class="content-body">
+            <!-- row -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card card-height">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-solid fa-book"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Danh sách đề tài</div>
+                                    <div class="stat-digit">9/10</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card card-height">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-solid fa-pager"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Nộp đề cương</div>
+                                    <div class="stat-digit"><span class="badge badge-info">Đã nộp</span></div>
+                                    <div class="stat-text"><button class="btn btn-sm btn-secondary">Nộp đề cương</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card card-height">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Nộp khóa luận</div>
+                                    <div class="stat-digit"><span class="badge badge-danger">Chưa nộp</span></div>
+                                    <div class="stat-text"><button class="btn btn-sm btn-secondary">Nộp khóa luận</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card card-height">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-solid fa-arrow-up-1-9"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Chi tiết điểm</div>
+                                    <div class="stat-digit"><span class="badge badge-danger">Chưa chấm điểm</span></div>
+                                    <div class="stat-text"><button class="btn btn-sm btn-secondary">Xem chi tiết</button></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                @RenderBody()
+
+
             </div>
         </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
 
-    @Scripts.Render("~/bundles/jquery")
+
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright © Designed &amp; Developed by <a href="#" target="_blank">Nguyễn Tuấn Kiệt</a> 2022</p>
+                <p>Distributed by <a href="https://themewagon.com/" target="_blank">NTU</a></p>
+            </div>
+        </div>
+
+
+
+
+    </div>
+   
+
+    <script src="~/assets/Admin/vendor/global/global.min.js"></script>
+    <script src="~/assets/Admin/js/quixnav-init.js"></script>
+    <script src="~/assets/Admin/js/custom.min.js"></script>
+
+    <script src="~/assets/Admin/vendor/chartist/js/chartist.min.js"></script>
+
+    <script src="~/assets/Admin/vendor/moment/moment.min.js"></script>
+    <script src="~/assets/Admin/vendor/pg-calendar/js/pignose.calendar.min.js"></script>
+
+    <script src="~/assets/Admin/js/dashboard/dashboard-2.js"></script>
+
+    <script src="~/assets/Admin/vendor/sweetalert2/dist/sweetalert2.min.js"></script>
+    <script src="~/assets/Admin/js/plugins-init/sweetalert-init.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+
+    @*@Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @RenderSection("scripts", required: false)*@
+
+    <!-- Circle progress -->
+
 </body>
+
 </html>

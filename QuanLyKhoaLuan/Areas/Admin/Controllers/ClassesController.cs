@@ -7,6 +7,7 @@ using System.Net;
 using System.Security.Claims;
 using System.Web;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.Bibliography;
 using QuanLyKhoaLuan.Models;
 
 namespace QuanLyKhoaLuan.Areas.Admin.Controllers
@@ -224,24 +225,32 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Class cls = db.Classes.Find(model.class_id);
-                cls.name = model.name;
-                cls.code = model.code;
-                cls.major_id = model.major_id;
-                cls.description = model.description;
+                var checkCode = db.Classes.Where(x => x.code != cls.code).Count(x => x.code == model.code);
 
-                cls.updated_at = DateTime.Now;
-              
+                if (checkCode != 0)
+                {
+                    ModelState.AddModelError("", "Mã lớp đã tồn tại");
+                } else
+                {
+                    cls.name = model.name;
+                    cls.code = model.code;
+                    cls.major_id = model.major_id;
+                    cls.description = model.description;
 
-                db.Entry(cls).State = EntityState.Modified;
-                var rs = db.SaveChanges();
-                if (rs != 0)
-                {
-                    TempData["status"] = "Cập nhật lớp thành công!";
-                    return RedirectToAction("Index");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Cập nhật lớp thất bại");
+                    cls.updated_at = DateTime.Now;
+
+
+                    db.Entry(cls).State = EntityState.Modified;
+                    var rs = db.SaveChanges();
+                    if (rs != 0)
+                    {
+                        TempData["status"] = "Cập nhật lớp thành công!";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Cập nhật lớp thất bại");
+                    }
                 }
             }
             ViewBag.major_id = new SelectList(db.Majors, "major_id", "code", model.major_id);

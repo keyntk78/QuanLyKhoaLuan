@@ -275,5 +275,38 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             return View("Edit");
         }
 
+
+        public ActionResult Detail(Guid id)
+        {
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var result = db.Users.Join(db.Roles, u=>u.role_id, r=>r.role_id, (u,r) => new
+            {
+                user = u,
+                role = r
+            }).SingleOrDefault(u=>u.user.user_id == id);
+
+            
+
+            if (result != null)
+            {
+                return Json(new
+                {
+                    Data = result,
+                    Success = true
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new
+            {
+                Success = false
+            }, JsonRequestBehavior.AllowGet);
+
+        }
+
     }
 }

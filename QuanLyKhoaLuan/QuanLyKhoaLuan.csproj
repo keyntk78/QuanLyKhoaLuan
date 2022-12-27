@@ -164,8 +164,10 @@
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LecturersController.cs" />
     <Compile Include="Areas\Admin\Controllers\MajorsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
     <Compile Include="Areas\Admin\Controllers\School_yearController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\TopicsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Common\CommonConstants.cs" />
     <Compile Include="Common\UserLogin.cs" />
@@ -204,6 +206,10 @@
     <Compile Include="Migrations\202212230210053_chinhsuabangclass.designer.cs">
       <DependentUpon>202212230210053_chinhsuabangclass.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202212271501540_addtabletopic.cs" />
+    <Compile Include="Migrations\202212271501540_addtabletopic.designer.cs">
+      <DependentUpon>202212271501540_addtabletopic.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Department.cs" />
@@ -213,6 +219,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\School_year.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="ModelViews\LoginModel.cs" />
     <Compile Include="ModelViews\RegisterModel.cs" />
@@ -5841,6 +5848,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Style.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -6370,6 +6378,16 @@
     <Content Include="Areas\Admin\Views\Students\_DetailPartialView.cshtml" />
     <Content Include="Areas\Admin\Views\Students\FormImportFile.cshtml" />
     <Content Include="Areas\Admin\Views\Lecturers\FormImportFile.cshtml" />
+    <Content Include="Areas\Admin\Views\Users\_DetailPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Delete.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Details.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Roles\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Topics\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Topics\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Topics\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Topics\_DetailPartialView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Controller\classesControler.js" />
     <Content Include="Scripts\Controller\departmentController.js" />
@@ -6377,6 +6395,7 @@
     <Content Include="Scripts\Controller\majorController.js" />
     <Content Include="Scripts\Controller\shool_yearController.js" />
     <Content Include="Scripts\Controller\studentController.js" />
+    <Content Include="Scripts\Controller\topicController.js" />
     <Content Include="Scripts\Controller\userController.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -6389,6 +6408,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Uploads\Images\female.png" />
+    <Content Include="Uploads\Images\logo.png" />
     <Content Include="Uploads\Images\male.png" />
     <Content Include="Uploads\Images\y.jpg" />
     <Content Include="Web.config" />
@@ -6406,6 +6426,7 @@
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Uploads\Excel\DanhSachSinhVien.xlsx" />
     <Content Include="Uploads\Excel\DanhSachGiangVien.xlsx" />
+    <Content Include="Views\Shared\_HeaderPartialView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -6445,6 +6466,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202212230210053_chinhsuabangclass.resx">
       <DependentUpon>202212230210053_chinhsuabangclass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212271501540_addtabletopic.resx">
+      <DependentUpon>202212271501540_addtabletopic.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

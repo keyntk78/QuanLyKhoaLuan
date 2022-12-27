@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DocumentFormat.OpenXml.EMMA;
 using QuanLyKhoaLuan.Models;
 
 namespace QuanLyKhoaLuan.Areas.Admin.Controllers
@@ -62,6 +63,10 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             return View();
         }
 
+        private bool CheckName(string name)
+        {
+            return db.School_years.Count(x => x.name == name) > 0;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -69,22 +74,28 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                school_year.school_year_id = Guid.NewGuid();
-                school_year.updated_at = DateTime.Now;
-                school_year.created_at = DateTime.Now;
-                db.School_years.Add(school_year);
-                var result = db.SaveChanges();
-                if (result != 0)
+                if (CheckName(school_year.name))
                 {
-                    TempData["status"] = "Thêm niên khóa thành công!";
-                    return RedirectToAction("Index");
-                }
-                else
+                    ModelState.AddModelError("", "Niên khóa đã tồn tại");
+                } else
                 {
-                    ModelState.AddModelError("", "Thêm niên khóa thất bại");
+                    school_year.school_year_id = Guid.NewGuid();
+                    school_year.updated_at = DateTime.Now;
+                    school_year.created_at = DateTime.Now;
+                    db.School_years.Add(school_year);
+                    var result = db.SaveChanges();
+                    if (result != 0)
+                    {
+                        TempData["status"] = "Thêm niên khóa thành công!";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Thêm niên khóa thất bại");
+                    }
                 }
+              
             }
-
             return View(school_year);
         }
 
@@ -163,23 +174,32 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 School_year school_Year = db.School_years.Find(model.school_year_id);
-                school_Year.name = model.name;
-                school_Year.start_date = model.start_date;
-                school_Year.end_date = model.end_date;
-                school_Year.updated_at = DateTime.Now;
 
-                db.Entry(school_Year).State = EntityState.Modified;
-                var rs = db.SaveChanges();
-                if (rs != 0)
+                var checkName = db.School_years.Where(x => x.name != school_Year.name).Count(x => x.name == model.name);
+                if (checkName != 0)
                 {
-                    TempData["status"] = "Cập nhật niên khóa thành công!";
-                    return RedirectToAction("Index");
+                    ModelState.AddModelError("", "Niên khóa đã tồn tại");
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Cập nhật niên khóa  thất bại");
+                    
+                    school_Year.name = model.name;
+                    school_Year.start_date = model.start_date;
+                    school_Year.end_date = model.end_date;
+                    school_Year.updated_at = DateTime.Now;
+
+                    db.Entry(school_Year).State = EntityState.Modified;
+                    var rs = db.SaveChanges();
+                    if (rs != 0)
+                    {
+                        TempData["status"] = "Cập nhật niên khóa thành công!";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Cập nhật niên khóa  thất bại");
+                    }
                 }
             }
             return View(model);

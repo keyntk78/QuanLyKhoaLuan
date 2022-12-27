@@ -76,6 +76,12 @@
         });
 
 
+        $('body').on('click', '.btnDetail', function (e) {
+            var id = $(this).data('id');
+            userController.Detail(id);
+        });
+
+
         pageSize = $('#pageSize').val();
         userController.loadData(null, pageSize, "", "");
     },
@@ -112,7 +118,8 @@
                         html += `<td>${item[i].role_name}</td>`;
                         html += `<td>`;
                         html += `<button data-id="${item[i].user.user_id}" class="btn btn-danger btnDelete" title="Xóa" ><i class="fa-solid fa-trash"></i></button> | `
-                        html += `<a  href="/Admin/Users/Edit/${item[i].user.user_id}"  class="btn btn-success btnEdit" title="Cập nhật"><i class="fa-solid fa-pen-to-square"></i></a></td >`
+                        html += `<a  href="/Admin/Users/Edit/${item[i].user.user_id}"  class="btn btn-success btnEdit" title="Cập nhật"><i class="fa-solid fa-pen-to-square"></i></a>
+                                 | <button data-id="${item[i].user.user_id}" class="btn btn-info btnDetail" data-toggle="modal" data-target="#exampleModal" title="Xem chi tiết" ><i class="fa-solid fa-eye"></i></button></td >`
                         html += `</tr>`;
                     }
                 }
@@ -198,7 +205,32 @@
                 }
             }
         });
-    }
+    },
+
+    Detail: function (id) {
+        $.ajax({
+            url: "/Admin/Users/Detail",
+            type: "GET",
+            data: { id: id },
+            success: function (res) {
+                if (res.Success) {
+
+
+                    $('#avatarDetail').attr("src", res.Data.user.avatar);
+
+                    $('#code').text(res.Data.user.username);
+                    $('#full_name').text(res.Data.user.full_name);
+                    $('#email').text(res.Data.user.email);
+                    $('#phone').text(res.Data.user.phone);
+                    $('#role').text(res.Data.role.role_name);
+                } else {
+                    alert("Có lỗi");
+                }
+            }
+        });
+    },
+
+
 
 }
 userController.init();

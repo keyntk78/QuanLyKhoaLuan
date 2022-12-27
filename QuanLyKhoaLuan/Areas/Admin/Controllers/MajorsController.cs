@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Antlr.Runtime.Misc;
+using DocumentFormat.OpenXml.Bibliography;
 using QuanLyKhoaLuan.Models;
 
 namespace QuanLyKhoaLuan.Areas.Admin.Controllers
@@ -202,25 +203,33 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             {
 
                 Major major = db.Majors.Find(model.major_id);
-                major.name = model.name;
-                major.code = model.code;
-                major.department_id = model.department_id;
-                major.description = model.description;
-
-                major.updated_at = DateTime.Now;
-
-
-                db.Entry(major).State = EntityState.Modified;
-                var rs = db.SaveChanges();
-                if (rs != 0)
+                var checkCode = db.Majors.Where(x => x.code != major.code).Count(x => x.code == model.code);
+                if (checkCode != 0)
                 {
-                    TempData["status"] = "Cập nhật bộ môn thành công!";
-                    return RedirectToAction("Index");
-                }
-                else
+                    ModelState.AddModelError("", "Mã bộ môn đã tồn tại");
+                } else
                 {
-                    ModelState.AddModelError("", "Cập nhật bộ môn thất bại");
+                    major.name = model.name;
+                    major.code = model.code;
+                    major.department_id = model.department_id;
+                    major.description = model.description;
+
+                    major.updated_at = DateTime.Now;
+
+
+                    db.Entry(major).State = EntityState.Modified;
+                    var rs = db.SaveChanges();
+                    if (rs != 0)
+                    {
+                        TempData["status"] = "Cập nhật bộ môn thành công!";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Cập nhật bộ môn thất bại");
+                    }
                 }
+          
             }
             ViewBag.department_id = new SelectList(db.Departments, "department_id", "code", model.department_id);
             return View(model);

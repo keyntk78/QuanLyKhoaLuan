@@ -55,6 +55,7 @@ namespace QuanLyKhoaLuan.Controllers
 
                             var userSession = new UserLogin();
                             userSession.id = result.user_id;
+                            userSession.full_name = result.full_name;
                             userSession.username = result.username;
                             userSession.password = result.password;
                             userSession.code_role = code_role;

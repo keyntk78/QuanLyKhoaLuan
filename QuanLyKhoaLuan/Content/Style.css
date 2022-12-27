@@ -1,0 +1,53 @@
+﻿h1.title-logo {
+    font-size: 14px;
+    color: #fff;
+    padding-top: 8px;
+    padding-left: 15px;
+}
+
+img.logo {
+    width: 60px;
+    height: 60px;
+}
+
+.nav-header {
+    background-color: #673BB7 !important;
+    width: auto !important;
+}
+
+.header {
+    background-color: #673BB7 !important;
+}
+
+.content-body {
+    margin-left: 0 !important;
+}
+
+.card.card-height {
+    min-height: 150px;
+}
+
+.stat-icon.d-inline-block {
+    color: #003399;
+}
+
+.stat-widget-one .stat-text {
+    font-size: 18px;
+    color: #330066;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.stat-widget-one .stat-digit {
+    font-size: 15px;
+    color: #330066;
+    padding-bottom:5px;
+}
+
+.table {
+    color: black !important;
+}
+
+li.nav-item.dropdown.header-profile {
+    color:#fff
+}

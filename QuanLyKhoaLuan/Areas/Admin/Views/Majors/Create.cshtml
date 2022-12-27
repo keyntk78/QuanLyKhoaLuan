@@ -46,7 +46,7 @@
                                 <div class="form-group">
                                     <label class="pl-4">Mã bộ môn <span class="text-red">(*)</span></label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập mã bộ môn ..." } })
+                                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập mã bộ môn ...", id="code" } })
                                         @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                 <div class="form-group">
                                     <label class="pl-4">Tên bộ môn <span class="text-red">(*)</span></label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập tên bộ môn ..." } })
+                                        @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập tên bộ môn ...", id="name" } })
                                         @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -96,3 +96,16 @@
         }
     </div>
 </div>
+
+@section scripts {
+    <script>
+        $(function () {
+            // đăng ký sự kiên click
+            $('#btn-reset').click(function () {
+                $("#code").val("");
+                $("#name").val("");
+                $("#desc").val("");
+            });
+        });
+    </script>
+}

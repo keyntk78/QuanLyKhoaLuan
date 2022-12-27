@@ -152,24 +152,31 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 Department department = db.Departments.Find(model.department_id);
-                department.code = model.code;
-                department.name = model.name;
-                department.founding_date = model.founding_date;
-                department.updated_at = DateTime.Now;
+                var checkCode = db.Departments.Where(x => x.code != department.code).Count(x => x.code == model.code);
 
-                db.Entry(department).State = EntityState.Modified;
-                var rs =  db.SaveChanges();
-                if (rs != 0)
+                if (checkCode != 0)
                 {
-                    TempData["status"] = "Cập nhật khoa thành công!";
-                    return RedirectToAction("Index");
-                }
-                else
+                    ModelState.AddModelError("", "Mã khoa đã tồn tại");
+                } else
                 {
-                    ModelState.AddModelError("", "Cập nhật khoa  thất bại");
-                }
+                    department.code = model.code;
+                    department.name = model.name;
+                    department.founding_date = model.founding_date;
+                    department.updated_at = DateTime.Now;
+
+                    db.Entry(department).State = EntityState.Modified;
+                    var rs = db.SaveChanges();
+                    if (rs != 0)
+                    {
+                        TempData["status"] = "Cập nhật khoa thành công!";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Cập nhật khoa  thất bại");
+                    }
+                }      
             }
             return View(model);
         }

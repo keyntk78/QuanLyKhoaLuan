@@ -23,6 +23,8 @@ namespace QuanLyKhoaLuan.Models
         public DbSet<Lecturer> Lecturer { get; set;}
         public DbSet<Student> Students { get; set; }
         public DbSet<Class> Classes { get; set; }
+        public DbSet<Topic> Topics { get; set; }
+
 
     }
 }
