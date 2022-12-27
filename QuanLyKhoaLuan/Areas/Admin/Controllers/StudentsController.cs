@@ -7,19 +7,18 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Antlr.Runtime.Misc;
 using ClosedXML.Excel;
-using QuanLyKhoaLuan.Common;
+using DocumentFormat.OpenXml.EMMA;
 using QuanLyKhoaLuan.Helpper;
 using QuanLyKhoaLuan.Models;
 
 namespace QuanLyKhoaLuan.Areas.Admin.Controllers
 {
-    public class LecturersController : BaseController
+    public class StudentsController : BaseController
     {
         private QuanLyKhoaLuanDBContext db = new QuanLyKhoaLuanDBContext();
 
-        // GET: Admin/Lecturers
+        // GET: Admin/Students
         public ActionResult Index()
         {
             if (TempData["status"] != null)
@@ -27,42 +26,73 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                 ViewBag.Status = TempData["status"].ToString();
                 TempData.Remove("status");
             }
-            ViewBag.department = db.Departments.ToList();
 
+            ViewBag.department = db.Departments.ToList();
+            ViewBag.shool_year = db.School_years.ToList();
+            ViewBag.classes = db.Classes.ToList();
+            ViewBag.major = db.Majors.ToList();
             return View();
         }
 
 
-        //string keywork, bool? active
-        public ActionResult GetLecturersData(int? page, int? pageSize, string keywork, Guid? department_id, bool? active)
+        //int? page, int? pageSize, string keywork, Guid? department_id, bool? active
+        public ActionResult GetStudentData(int? page, int? pageSize, string keywork, bool? active, Guid? department_id, Guid? major_id, Guid? class_id, Guid? shool_year_id)
         {
             db.Configuration.ProxyCreationEnabled = false;
 
-            var results = (from l in db.Lecturer
-                           join u in db.Users on l.user_id equals u.user_id
+
+
+
+            var results = (from s in db.Students
+                           join u in db.Users on s.user_id equals u.user_id
                            join r in db.Roles on u.role_id equals r.role_id
-                           join d in db.Departments on l.department_id equals d.department_id
-                           where r.code == "lecture"
+                           join c in db.Classes on s.class_id equals c.class_id
+                           join m in db.Majors on c.major_id equals m.major_id
+                           join d in db.Departments on m.department_id equals d.department_id
+                           join n in db.School_years on s.school_year_id equals n.school_year_id
                            orderby u.updated_at descending
                            select new
                            {
-                               lecture = l,
+
+                               student = s,
                                user = u,
-                               department = d
+                               classes = c,
+                               school_year = n,
+                               major = m,
+                               departments = d,
+
                            }).ToList();
 
             if (!string.IsNullOrEmpty(keywork))
             {
-                results = results.Where(l => l.lecture.full_name.ToLower().Contains(keywork.Trim().ToLower())
-                || l.lecture.code.ToLower().Contains(keywork.Trim().ToLower())
-                || l.lecture.email.ToLower().Contains(keywork.Trim().ToLower())
+                results = results.Where(s => s.student.full_name.ToLower().Contains(keywork.Trim().ToLower())
+                || s.student.code.ToLower().Contains(keywork.Trim().ToLower())
+                || s.student.email.ToLower().Contains(keywork.Trim().ToLower())
                 )
                     .ToList();
             }
 
             if (department_id != null)
             {
-                results = results.Where(u => u.lecture.department_id == department_id)
+                results = results.Where(u => u.departments.department_id == department_id)
+                    .ToList();
+            }
+
+            if (major_id != null)
+            {
+                results = results.Where(u => u.major.major_id == major_id)
+                    .ToList();
+            }
+
+            if (class_id != null)
+            {
+                results = results.Where(u => u.classes.class_id == class_id)
+                    .ToList();
+            }
+
+            if (shool_year_id != null)
+            {
+                results = results.Where(u => u.school_year.school_year_id == shool_year_id)
                     .ToList();
             }
 
@@ -92,18 +122,9 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         }
 
 
-
-        // GET: Admin/Lecturers/Create
-        public ActionResult Create()
-        {
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "name");
-            return View();
-        }
-
-
         private bool CheckCode(string code)
         {
-            return db.Lecturer.Count(x => x.code == code) > 0;
+            return db.Students.Count(x => x.code == code) > 0;
         }
 
         private bool CheckEmail(string email)
@@ -111,22 +132,31 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             return db.Users.Count(x => x.email == email) > 0;
         }
 
-        private Guid IdRoleLecture()
+        private Guid IdRoStudent()
         {
-            var admin = db.Roles.Where(x => x.code == "lecture").FirstOrDefault();
+            var admin = db.Roles.Where(x => x.code == "student").FirstOrDefault();
             return admin.role_id;
         }
 
+
+        // GET: Admin/Students/Create
+        public ActionResult Create()
+        {
+            ViewBag.class_id = new SelectList(db.Classes, "class_id", "name");
+            ViewBag.school_year_id = new SelectList(db.School_years, "school_year_id", "name");
+            return View();
+        }
+
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Lecturer model)
+        public ActionResult Create(Student model)
         {
             if (ModelState.IsValid)
             {
-
                 if (CheckCode(model.code))
                 {
-                    ModelState.AddModelError("", "Mã giáo viên đã tồn tại");
+                    ModelState.AddModelError("", "Mã sinh viên đã tồn tại");
                 }
                 else if (CheckEmail(model.email))
                 {
@@ -142,7 +172,7 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                     user.phone = model.phone;
                     user.password = model.code.ToLower().ToMD5();
                     user.active = true;
-                    user.role_id = IdRoleLecture();
+                    user.role_id = IdRoStudent();
                     user.updated_at = DateTime.Now;
                     user.created_at = DateTime.Now;
 
@@ -158,41 +188,39 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                     db.Users.Add(user);
                     db.SaveChanges();
 
-                    var user_id = db.Users.Where(u => u.username == model.code).FirstOrDefault().user_id;
+                    var user_id = db.Users.Where(u => u.username == model.code.ToLower()).FirstOrDefault().user_id;
                     if (user_id != null)
                     {
                         model.code = model.code.ToUpper();
-                        model.lecturer_id = Guid.NewGuid();
+                        model.student_id = Guid.NewGuid();
                         model.updated_at = DateTime.Now;
                         model.created_at = DateTime.Now;
                         model.user_id = user_id;
-                        db.Lecturer.Add(model);
+                        db.Students.Add(model);
                         var result = db.SaveChanges();
 
                         if (result != 0)
                         {
-                            TempData["status"] = "Thêm giảng viên thành công!";
+                            TempData["status"] = "Thêm sinh viên thành công!";
                             return RedirectToAction("Index");
                         }
                         else
                         {
-                            ModelState.AddModelError("", "Thêm quản trị viên thất bại");
+                            ModelState.AddModelError("", "Thêm sinh viên thất bại");
                         }
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Thêm giảng viên thất bại");
+                        ModelState.AddModelError("", "Thêm sinh viên thất bại");
                     }
-
                 }
-
-
             }
 
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "name", model.department_id);
-
+            ViewBag.class_id = new SelectList(db.Classes, "class_id", "name", model.class_id);
+            ViewBag.school_year_id = new SelectList(db.School_years, "school_year_id", "name", model.school_year_id);
             return View(model);
         }
+
 
 
         [HttpPost]
@@ -233,12 +261,11 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         public ActionResult Delete(Guid id)
         {
 
-            Lecturer lecturer = db.Lecturer.Find(id);
-            User user = db.Users.Find(lecturer.user_id);
+            Student student = db.Students.Find(id);
+            User user = db.Users.Find(student.user_id);
             db.Users.Remove(user);
-            db.Lecturer.Remove(lecturer);
+            db.Students.Remove(student);
             var rs = db.SaveChanges();
-
 
             if (rs > 0)
             {
@@ -266,16 +293,24 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-
-            var result = (from l in db.Lecturer
-                          join u in db.Users on l.user_id equals u.user_id
-                          join d in db.Departments on l.department_id equals d.department_id
+            var result = (from s in db.Students
+                          join u in db.Users on s.user_id equals u.user_id
+                          join r in db.Roles on u.role_id equals r.role_id
+                          join c in db.Classes on s.class_id equals c.class_id
+                          join m in db.Majors on c.major_id equals m.major_id
+                          join d in db.Departments on m.department_id equals d.department_id
+                          join n in db.School_years on s.school_year_id equals n.school_year_id
                           select new
                           {
+
+                              student = s,
                               user = u,
-                              lecture = l,
-                              department = d
-                          }).SingleOrDefault(l => l.lecture.lecturer_id == id);
+                              classes = c,
+                              school_year = n,
+                              major = m,
+                              departments = d,
+
+                          }).SingleOrDefault(s => s.student.student_id == id);
 
 
             if (result != null)
@@ -293,8 +328,6 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             }, JsonRequestBehavior.AllowGet);
 
         }
-
-
 
         [HttpPost]
         public string UploatAvatar(HttpPostedFileBase file)
@@ -315,35 +348,37 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         }
 
 
-        // GET: Admin/Lecturers/Edit/5
+        // GET: Admin/Students/Edit/5
         public ActionResult Edit(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Lecturer lecturer = db.Lecturer.Find(id);
-            if (lecturer == null)
+            Student student = db.Students.Find(id);
+            if (student == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "name", lecturer.department_id);
-            ViewBag.avatar = db.Users.Find(lecturer.user_id).avatar;
-            return View(lecturer);
+            ViewBag.class_id = new SelectList(db.Classes, "class_id", "name", student.class_id);
+            ViewBag.school_year_id = new SelectList(db.School_years, "school_year_id", "name", student.school_year_id);
+            ViewBag.avatar = db.Users.Find(student.user_id).avatar;
+
+            return View(student);
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Lecturer model)
+        public ActionResult Edit(Student model)
         {
-            var lecturer = db.Lecturer.Find(model.lecturer_id);
+            var student = db.Students.Find(model.student_id);
             if (ModelState.IsValid)
-            {
-             
-                var checkEmail = db.Lecturer.Where(x => x.email != lecturer.email).Count(x => x.email == model.email);
-                var checkCode = db.Lecturer.Where(x => x.code != lecturer.code).Count(x => x.code == model.code);
+            {   
+                var checkEmail = db.Students.Where(x => x.email != student.email).Count(x => x.email == model.email);
+                var checkCode = db.Students.Where(x => x.code != student.code).Count(x => x.code == model.code);
                 var avatar = Request.Form["avatar"];
+
                 if (checkCode != 0)
                 {
                     ModelState.AddModelError("", "Mã sinh viên đã tồn tại");
@@ -351,64 +386,75 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                 else if (checkEmail != 0)
                 {
                     ModelState.AddModelError("", "Email đã tồn tại");
-                } else
+                }
+                else
                 {
-                    User user = db.Users.Find(lecturer.user_id);
+                    User user = db.Users.Find(student.user_id);
                     user.full_name = model.full_name;
                     user.username = model.code.ToLower();
                     user.email = model.email;
                     user.phone = model.phone;
                     user.updated_at = DateTime.Now;
 
-                    if (avatar != "")
+                    
+
+                    if(avatar != "")
                     {
                         user.avatar = avatar;
                     }
 
-                    lecturer.code = model.code;
-                    lecturer.full_name = model.full_name;
-                    lecturer.gender = model.gender;
-                    lecturer.phone = model.phone;
-                    lecturer.email = model.email;
-                    lecturer.address = model.address;
-                    lecturer.department_id = model.department_id;
-                    lecturer.updated_at = DateTime.Now;
-                    lecturer.birthday = model.birthday;
 
+                    student.code = model.code;
+                    student.full_name = model.full_name;
+                    student.gender = model.gender;
+                    student.phone = model.phone;
+                    student.email = model.email;
+                    student.address = model.address;
+                    student.class_id = model.class_id;
+                    student.school_year_id = model.school_year_id;
+                    student.updated_at = DateTime.Now;
+                    student.birthday = model.birthday;
+                    student.gpa = model.gpa;
 
                     db.Entry(user).State = EntityState.Modified;
                     var rs1 = db.SaveChanges();
-                    db.Entry(lecturer).State = EntityState.Modified;
+                    db.Entry(student).State = EntityState.Modified;
 
                     var rs = db.SaveChanges();
                     if (rs != 0 && rs1 != 0)
                     {
-                        TempData["status"] = "Cập nhật giảng viên thành công!";
+                        TempData["status"] = "Cập nhật sinh viên thành công!";
                         return RedirectToAction("Index");
                     }
                     else
                     {
-                        ModelState.AddModelError("", "Cập nhật giảng viên thất bại");
+                        ModelState.AddModelError("", "Cập nhật sinh viên thất bại");
                     }
+
                 }
             }
-            ViewBag.department_id = new SelectList(db.Departments, "department_id", "name", model.department_id);
-            ViewBag.avatar = db.Users.Find(lecturer.user_id).avatar;
+            ViewBag.class_id = new SelectList(db.Classes, "class_id", "name", model.class_id);
+            ViewBag.school_year_id = new SelectList(db.School_years, "school_year_id", "name", model.school_year_id);
+            ViewBag.user_id = new SelectList(db.Users, "user_id", "username", model.user_id);
+            ViewBag.avatar = db.Users.Find(student.user_id).avatar;
             return View(model);
         }
 
+
         public FileResult DownloadExcel()
         {
-            string filePath = Server.MapPath("~/Uploads/Excel/DanhSachGiangVien.xlsx");
-            return File(filePath, "application/vnd.ms-excel", "DanhSachGiangVien.xlsx");
+            string filePath = Server.MapPath("~/Uploads/Excel/DanhSachSinhVien.xlsx");
+            return File(filePath, "application/vnd.ms-excel", "DanhSachSinhVien.xlsx");
         }
 
         public ActionResult FormImportFile()
         {
 
+          
             return View();
         }
 
+        [HttpPost]
         public ActionResult ImportFile(HttpPostedFileBase myExcelData)
         {
 
@@ -437,10 +483,13 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                             DateTime birthday = xlWorkbook.Worksheets.Worksheet(1).Cell(row, 5).GetDateTime();
                             string gender = xlWorkbook.Worksheets.Worksheet(1).Cell(row, 6).GetString();
                             string address = xlWorkbook.Worksheets.Worksheet(1).Cell(row, 7).GetString();
-                            string code_Department = xlWorkbook.Worksheets.Worksheet(1).Cell(row, 8).GetString();
+                            double gpa = xlWorkbook.Worksheets.Worksheet(1).Cell(row, 8).GetDouble();
+                            string code_Class = xlWorkbook.Worksheets.Worksheet(1).Cell(row, 9).GetString();
+                            string schoolYear = xlWorkbook.Worksheets.Worksheet(1).Cell(row, 10).GetString();
 
-                            var department = db.Departments.SingleOrDefault(x => x.code == code_Department);
-                            if (department != null)
+                            var classes = db.Classes.SingleOrDefault(x => x.code == code_Class);
+                            var shool_year = db.School_years.SingleOrDefault(x => x.name == schoolYear);
+                            if (classes != null && shool_year != null)
                             {
                                 if (CheckCode(code))
                                 {
@@ -468,7 +517,7 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                                     user.phone = phone;
                                     user.password = code.ToLower().ToMD5();
                                     user.active = true;
-                                    user.role_id = IdRoleLecture();
+                                    user.role_id = IdRoStudent();
                                     user.updated_at = DateTime.Now;
                                     user.created_at = DateTime.Now;
 
@@ -487,30 +536,30 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                                     var user_id = db.Users.Where(u => u.username == code.ToLower()).FirstOrDefault().user_id;
                                     if (user_id != null)
                                     {
-                                        Lecturer lecturer = new Lecturer();
-                                        lecturer.lecturer_id = Guid.NewGuid();
-                                        lecturer.code = code.ToUpper();
-                                        lecturer.full_name = full_name;
-                                        lecturer.phone = phone;
-                                        lecturer.email = email;
-                                        lecturer.address = address;
-                        
+                                        Student student = new Student();
+                                        student.student_id = Guid.NewGuid();
+                                        student.code = code.ToUpper();
+                                        student.full_name = full_name;
+                                        student.phone = phone;
+                                        student.email = email;
+                                        student.address = address;
+                                        student.gpa = gpa;
                                         if (gender.ToLower() == "nam")
                                         {
-                                            lecturer.gender = 1;
+                                            student.gender = 1;
                                         }
                                         else
                                         {
-                                            lecturer.gender = 0;
+                                            student.gender = 0;
                                         }
-                                        lecturer.updated_at = DateTime.Now;
-                                        lecturer.created_at = DateTime.Now;
-                                        lecturer.department_id = department.department_id;
-                                        lecturer.user_id = user_id;
-                                        lecturer.birthday = birthday;
-      
+                                        student.updated_at = DateTime.Now;
+                                        student.created_at = DateTime.Now;
+                                        student.class_id = classes.class_id;
+                                        student.user_id = user_id;
+                                        student.birthday = birthday;
+                                        student.school_year_id = shool_year.school_year_id;
 
-                                        db.Lecturer.Add(lecturer);
+                                        db.Students.Add(student);
                                         db.SaveChanges();
 
                                     }

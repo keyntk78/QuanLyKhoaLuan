@@ -162,7 +162,7 @@
 
                         html += `<td>`;
                         html += `<button data-id="${item[i].lecture.lecturer_id}" class="btn btn-danger btnDelete" title="Xóa" ><i class="fa-solid fa-trash"></i></button> | `
-                        html += `<a  href="/Admin/Users/Edit/${item[i].lecture.lecturer_id}"  class="btn btn-success btnEdit" title="Cập nhật"><i class="fa-solid fa-pen-to-square"></i></a>
+                        html += `<a  href="/Admin/Lecturers/Edit/${item[i].lecture.lecturer_id}"  class="btn btn-success btnEdit" title="Cập nhật"><i class="fa-solid fa-pen-to-square"></i></a>
                                     | <button data-id="${item[i].lecture.lecturer_id}" class="btn btn-info btnDetail" data-toggle="modal" data-target="#exampleModal" title="Xem chi tiết" ><i class="fa-solid fa-eye"></i></button>
                                     </td >`
                         html += `</tr>`;
@@ -204,15 +204,15 @@
 
         if (department_id == null) {
             if (active == null) {
-                lecturersController.loadData(null, pageSize, keywork, "", "");
+                lecturersController.loadData(page, pageSize, keywork, "", "");
             } else {
-                lecturersController.loadData(null, pageSize, keywork, "", active);
+                lecturersController.loadData(page, pageSize, keywork, "", active);
             }
         } else {
             if (active == null) {
-                lecturersController.loadData(null, pageSize, keywork, department_id, "");
+                lecturersController.loadData(page, pageSize, keywork, department_id, "");
             } else {
-                lecturersController.loadData(null, pageSize, keywork, department_id, active);
+                lecturersController.loadData(page, pageSize, keywork, department_id, active);
             }
         }
     },

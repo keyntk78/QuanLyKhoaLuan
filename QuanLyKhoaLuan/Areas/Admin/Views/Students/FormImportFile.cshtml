@@ -1,0 +1,112 @@
+﻿
+@{
+    ViewBag.Title = "Thêm danh sách sinh viên";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="content-body">
+    <div class="container-fluid">
+
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>ImportFile</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Bảng điều khiển</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Students")">Danh sách sinh viên</a></li>
+                    <li class="breadcrumb-item active">Thêm danh sách sinh viên</li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card p-bt90">
+                    <div class="card-body">
+                        <div class="form-horizontal">
+
+                            <div class="form-group">
+                                <div class="control-label col-md-2">Tải bản mẩu:</div>
+                                <div class="col-md-10">
+                                    <a href="@Url.Action("DownloadExcel", "Students")"><i class="fa-solid fa-file-excel"></i></a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="control-label col-md-2">Lưu ý:</div>
+                                <div class="col-md-10">
+                                    <p>
+                                        - Không được để trống các ô dữ liệu
+                                        <br />
+                                        - Nhập đúng các mã dữ liệu
+                                        <br />
+                                        - Tải đúng định dạng file ".xlsx" hoặc ".xls"
+                                    </p>
+                                    <p></p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="control-label col-md-2">Excel:</div>
+                                <div class="col-md-10">
+                                    <input type="file" id="FileUpload" name="FileUpload" class="" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="button" value="Tải lên" id="btnSubmit" class="btn btn-primary" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#btnSubmit").click(function () {
+                var formData = new FormData();
+                var fuUpladfile = document.getElementById("FileUpload");
+                var myFile = fuUpladfile.files[0];
+                formData.append("myExcelData", myFile);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("ImportFile", "Students")',
+                    contentType: false,
+                    processData: false,
+                    data: formData,
+                    success: function (res) {
+                        if (res.Success) {
+                            Swal.fire(
+                                'Đã Thêm!',
+                                res.Data,
+                                'success'
+                            )
+                        } else {
+                            Swal.fire(
+                                'Thêm thất bại!',
+                                res.Data,
+                                'error'
+                            )
+                        }
+                       
+                    }
+                });
+            })
+        })
+    </script>
+
+}
+
+
+

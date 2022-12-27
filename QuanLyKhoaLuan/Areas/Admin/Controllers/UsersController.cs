@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -155,9 +156,16 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         {
             // validate
             // xử lý upload
-            file.SaveAs(Server.MapPath("~/Uploads/Images" + file.FileName));
 
-            var url = "/Uploads/Images" + file.FileName;
+            string filePath = Server.MapPath("~/Uploads/Images/");
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss");
+            string extension = Path.GetExtension(file.FileName);
+
+            filePath = filePath + fileName + extension;
+            file.SaveAs(filePath);
+
+            var url = "/Uploads/Images/" + fileName + extension;
+
 
             return url;
         }

@@ -1,25 +1,25 @@
-﻿@model QuanLyKhoaLuan.Models.Lecturer
+﻿@model QuanLyKhoaLuan.Models.Student
 
 @{
-    ViewBag.Title = "Thêm giảng viên";
+    ViewBag.Title = "Cập nhật sinh viên";
     Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
 }
 
 
-<<div class="content-body">
+<div class="content-body">
     <div class="container-fluid">
 
         <div class="row page-titles mx-0">
             <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <h4>Thêm giảng viên</h4>
+                    <h4>Cập nhật sinh viên</h4>
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Bảng điều khiển</a></li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Lecturers")">Danh sách giảng viên</a></li>
-                    <li class="breadcrumb-item active">Thêm giảng viên</li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Students")">Danh sách sinh viên</a></li>
+                    <li class="breadcrumb-item active">Cập nhật sinh viên</li>
                 </ol>
             </div>
         </div>
@@ -27,21 +27,37 @@
         @using (Html.BeginForm())
         {
             <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Thay đổi ảnh đại diện</h4>
+                            <hr />
+                            <img class="col-12 avatar-upload" id="avatarUpload" src="@ViewBag.avatar" />
+                            <div class="custom-file text-center row mt-4">
+                                <input type="file" accept="image/*" name="fileUpload" id="fileUpload" style="display:none">
+                                <input class="form-control" id="avatar" name="avatar" style="display:none" />
+                                <input type="button" class="col-4 btn btn-primary" id="btn-upload" value="Chọn ảnh" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-lg-8">
                     <div class="card">
                         <div class="card-header">
 
                             <div class="col-sm-12 p-md-0 justify-content-sm-star mt-2 mt-sm-0 d-flex">
-                                <h4>Thông tin giảng viên</h4>
+                                <h4>Thông tin sinh viên</h4>
                             </div>
                         </div>
                         <div class="card-body">
                             @Html.AntiForgeryToken()
 
                             <div class="form-horizontal">
+
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.student_id)
                                 <div class="form-group">
-                                    <label class="pl-4">Mã giảng viên <span class="text-red">(*)</span></label>
+                                    <label class="pl-4">Mã sinh viên <span class="text-red">(*)</span></label>
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control", id = "code" } })
                                         @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
@@ -75,7 +91,8 @@
                                 <div class="form-group">
                                     <label class="pl-4">Ngày sinh</label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.birthday, new { htmlAttributes = new { @class = "form-control", type = "Date", id="date" } })
+                                        <input type="date" class="form-control" value="@Model.birthday.ToString("yyyy-MM-dd")" name="birthday" id="date" />
+                                        @*@Html.EditorFor(model => model.birthday.ToString("yyyy-MM-dd"), new { htmlAttributes = new { @class = "form-control", type = "Date" } })*@
                                         @Html.ValidationMessageFor(model => model.birthday, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -83,7 +100,6 @@
                                 <div class="form-group">
                                     <label class="pl-4">Giới tính</label>
                                     <div class="col-md-10">
-
                                         Nam  @Html.RadioButtonFor(m => m.gender, 1, new { @class = "mr-4", @checked = "checked" })
                                         Nữ  @Html.RadioButtonFor(m => m.gender, 0)
 
@@ -98,28 +114,35 @@
                                     </div>
                                 </div>
 
-
                                 <div class="form-group">
-                                    <label class="pl-4">Khoa <span class="text-red">(*)</span></label>
+                                    <label class="pl-4">Điểm trung bình</label>
                                     <div class="col-md-10">
-                                        @Html.DropDownList("department_id", null, htmlAttributes: new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(model => model.department_id, "", new { @class = "text-danger" })
+                                        @Html.EditorFor(model => model.gpa, new { htmlAttributes = new { @class = "form-control", id="gpa" } })
+                                        @Html.ValidationMessageFor(model => model.gpa, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                            </div>
 
-                        </div>
-                    </div>
-                </div>
+                                <div class="form-group">
+                                    <label class="pl-4">Lớp <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("class_id", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.class_id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-                <div class="col-lg-4">
-                    <div class="card p-bt90">
-                        <div class="card-body">
+                                <div class="form-group">
+                                    <label class="pl-4">Niên khóa <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("school_year_id", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.school_year_id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
 
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10 text-center">
-                                    <input type="submit" value="Thêm" class="btn btn-primary" />
-                                    <input type="button" id="btn-reset" value="Reset" class="btn btn-danger ml-3" />
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10 text-center">
+                                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                                        <input type="button" id="btn-reset" value="Reset" class="btn btn-danger ml-3" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -129,6 +152,8 @@
         }
     </div>
 </div>
+
+
 
 @section scripts {
     <script>
@@ -141,6 +166,39 @@
                 $("#phone").val("");
                 $("#date").val("");
                 $("#address").val("");
+                $("#gpa").val("");
+            });
+            $('#btn-upload').click(function () {
+                $('#fileUpload').trigger("click");
+            });
+            // bắt sự kiện change data của fileupload
+            $('#fileUpload').change(function () {
+                //kiểm tra trình duyệt có hổ trọư fomrdata
+                if (window.FormData !== undefined) {
+                    // lấy dử liệu trên file upload
+                    var fileUpload = $('#fileUpload').get(0);
+                    var files = fileUpload.files;
+                    // tạo đối tượng form data
+                    var formData = new FormData();
+                    //đưa dữ liệu vào form
+                    formData.append('file', files[0]);
+
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Admin/Students/UploatAvatar',
+                        contentType: false,
+                        processData: false,
+                        data: formData,
+                        success: function (urlImage) {
+                            $('#avatarUpload').attr("src", urlImage);
+                            $('#avatar').val(urlImage);
+                        },
+                        error: function (e) {
+                            alert("Có lỗi khi upload: " + e.statusText);
+                        }
+                    });
+
+                }
             });
         });
     </script>

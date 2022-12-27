@@ -132,9 +132,9 @@
         majorController.loadData(page, pageSize, keywork);
         var department_id = $('#select_department_id').val();
         if (department_id == null) {
-            majorController.loadData(null, pageSize, keywork, "");
+            majorController.loadData(page, pageSize, keywork, "");
         } else {
-            majorController.loadData(null, pageSize, keywork, department_id);
+            majorController.loadData(page, pageSize, keywork, department_id);
         }
     },
 

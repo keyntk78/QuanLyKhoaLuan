@@ -12,22 +12,25 @@ namespace QuanLyKhoaLuan.Models
     {
         [Key]
         public System.Guid student_id { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Mã sinh viên không được để trống")]
         [StringLength(20)]
         public string code { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Họ tên không được để trống")]
         [StringLength(255)]
         public string full_name { get; set; }
         [StringLength(100)]
-        [Required]
+        [Required(ErrorMessage = "Email không được để trống")]
         public string email { get; set; }
         [StringLength(15)]
         public string phone { get; set; }
+        [Required(ErrorMessage = "Ngày sinh không được để trống")]
+
         public DateTime birthday { get; set; }
         public Nullable<int> gender { get; set; }
         [StringLength(255)]
         public string address { get; set; }
-        [Range(0, 10)]
+        [Range(0, 10, ErrorMessage ="Điểm từ 0.0 - 10.0")]
+        [Required(ErrorMessage = "Điểm không được để trống")]
         public double gpa { get; set; }
         public System.Guid user_id { get; set; }
      
