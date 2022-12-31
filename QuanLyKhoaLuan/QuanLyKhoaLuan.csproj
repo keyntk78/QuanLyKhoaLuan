@@ -160,6 +160,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\BaseController.cs" />
     <Compile Include="Areas\Admin\Controllers\ClassesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\CouncilsController.cs" />
     <Compile Include="Areas\Admin\Controllers\DepartmentsController.cs" />
     <Compile Include="Areas\Admin\Controllers\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\LecturersController.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Areas\Admin\Controllers\RolesController.cs" />
     <Compile Include="Areas\Admin\Controllers\School_yearController.cs" />
     <Compile Include="Areas\Admin\Controllers\StudentsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\ThesesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TopicsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
     <Compile Include="Common\CommonConstants.cs" />
@@ -174,6 +176,8 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\PageStudentController.cs" />
+    <Compile Include="Controllers\UserInfoController.cs" />
+    <Compile Include="CustomValidation\ListLecturesCouncil.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -210,19 +214,47 @@
     <Compile Include="Migrations\202212271501540_addtabletopic.designer.cs">
       <DependentUpon>202212271501540_addtabletopic.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202212280205464_addTableCouncil.cs" />
+    <Compile Include="Migrations\202212280205464_addTableCouncil.designer.cs">
+      <DependentUpon>202212280205464_addTableCouncil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212280855421_addTableThese.cs" />
+    <Compile Include="Migrations\202212280855421_addTableThese.designer.cs">
+      <DependentUpon>202212280855421_addTableThese.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212281606188_updateThesis.cs" />
+    <Compile Include="Migrations\202212281606188_updateThesis.designer.cs">
+      <DependentUpon>202212281606188_updateThesis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212290256582_updatetheses22.cs" />
+    <Compile Include="Migrations\202212290256582_updatetheses22.designer.cs">
+      <DependentUpon>202212290256582_updatetheses22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202212300249501_addtablethese_reg.cs" />
+    <Compile Include="Migrations\202212300249501_addtablethese_reg.designer.cs">
+      <DependentUpon>202212300249501_addtablethese_reg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\Council.cs" />
     <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\Detail_Council.cs" />
     <Compile Include="Models\Lecturer.cs" />
     <Compile Include="Models\Major.cs" />
     <Compile Include="Models\QuanLyKhoaLuanDBContext.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\School_year.cs" />
     <Compile Include="Models\Student.cs" />
+    <Compile Include="Models\Thesis.cs" />
+    <Compile Include="Models\Thesis_registration.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="ModelViews\CreateCouncil.cs" />
+    <Compile Include="ModelViews\LecturerDepartment.cs" />
     <Compile Include="ModelViews\LoginModel.cs" />
     <Compile Include="ModelViews\RegisterModel.cs" />
+    <Compile Include="ModelViews\SubmitFile.cs" />
+    <Compile Include="ModelViews\TopicDepartmet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -6379,22 +6411,28 @@
     <Content Include="Areas\Admin\Views\Students\FormImportFile.cshtml" />
     <Content Include="Areas\Admin\Views\Lecturers\FormImportFile.cshtml" />
     <Content Include="Areas\Admin\Views\Users\_DetailPartialView.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\Create.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\Delete.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\Details.cshtml" />
-    <Content Include="Areas\Admin\Views\Roles\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Roles\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Topics\Create.cshtml" />
     <Content Include="Areas\Admin\Views\Topics\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Topics\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Topics\_DetailPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\Councils\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Councils\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Councils\_DetailPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\Councils\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Theses\Create.cshtml" />
+    <Content Include="Areas\Admin\Views\Theses\Edit.cshtml" />
+    <Content Include="Areas\Admin\Views\Theses\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Theses\_DetailPartialView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Controller\classesControler.js" />
+    <Content Include="Scripts\Controller\councilController.js" />
     <Content Include="Scripts\Controller\departmentController.js" />
     <Content Include="Scripts\Controller\lecturersController.js" />
     <Content Include="Scripts\Controller\majorController.js" />
     <Content Include="Scripts\Controller\shool_yearController.js" />
     <Content Include="Scripts\Controller\studentController.js" />
+    <Content Include="Scripts\Controller\thesesController.js" />
     <Content Include="Scripts\Controller\topicController.js" />
     <Content Include="Scripts\Controller\userController.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -6427,10 +6465,15 @@
     <Content Include="Uploads\Excel\DanhSachSinhVien.xlsx" />
     <Content Include="Uploads\Excel\DanhSachGiangVien.xlsx" />
     <Content Include="Views\Shared\_HeaderPartialView.cshtml" />
+    <Content Include="Views\PageStudent\SubmitOutline.cshtml" />
+    <Content Include="Views\PageStudent\SubmitThese.cshtml" />
+    <Content Include="Views\UserInfo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Uploads\Outline\" />
+    <Folder Include="Uploads\Theses\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -6469,6 +6512,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202212271501540_addtabletopic.resx">
       <DependentUpon>202212271501540_addtabletopic.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212280205464_addTableCouncil.resx">
+      <DependentUpon>202212280205464_addTableCouncil.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212280855421_addTableThese.resx">
+      <DependentUpon>202212280855421_addTableThese.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212281606188_updateThesis.resx">
+      <DependentUpon>202212281606188_updateThesis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212290256582_updatetheses22.resx">
+      <DependentUpon>202212290256582_updatetheses22.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202212300249501_addtablethese_reg.resx">
+      <DependentUpon>202212300249501_addtablethese_reg.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

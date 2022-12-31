@@ -24,6 +24,12 @@ namespace QuanLyKhoaLuan.Models
         public DbSet<Student> Students { get; set; }
         public DbSet<Class> Classes { get; set; }
         public DbSet<Topic> Topics { get; set; }
+        public DbSet<Council> councils { get; set; }
+        public DbSet<Detail_Council> detail_Councils { get; set; }
+
+        public DbSet<Thesis> Theses { get; set; }
+        public DbSet<Thesis_registration> thesis_Registrations { get; set; }
+
 
 
     }

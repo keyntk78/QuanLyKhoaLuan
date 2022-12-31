@@ -3,6 +3,7 @@ using QuanLyKhoaLuan.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -54,23 +55,31 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                     }
                     else
                     {
-                        user.full_name = model.full_name;
-                        user.email = model.email;
-                        user.phone = model.phone;
-                        if(model.avatar != null)
+                        var checkEmail = db.Users.Where(x => x.email != user.email).Count(x => x.email == model.email);
+                        if (checkEmail > 0)
                         {
-                            user.avatar = model.avatar;
-
-                            var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
-                            seesion.avatar = model.avatar;
-                            Console.WriteLine(seesion);
+                            ModelState.AddModelError("", "Email đã tồn tại");
                         }
-                       
-                        db.Entry(user).State = EntityState.Modified;
-                        db.SaveChanges();
+                        else
+                        {
+                            user.full_name = model.full_name;
+                            user.email = model.email;
+                            user.phone = model.phone;
+                            if (model.avatar != null)
+                            {
+                                user.avatar = model.avatar;
 
-                        TempData["status"] = "Cập nhật thông tin thành công";
-                        return RedirectToAction("Info", "Home");
+                                var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
+                                seesion.avatar = model.avatar;
+                                Console.WriteLine(seesion);
+                            }
+
+                            db.Entry(user).State = EntityState.Modified;
+                            db.SaveChanges();
+
+                            TempData["status"] = "Cập nhật thông tin thành công";
+                            return RedirectToAction("Info", "Home");
+                        }
                     }
                 }
                 catch (Exception e)
@@ -79,18 +88,23 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                 }
             }
 
-            return View("Info");
+            return View(model);
         }
-
 
         [HttpPost]
         public string UploatAvatar(HttpPostedFileBase file)
         {
             // validate
             // xử lý upload
-             file.SaveAs(Server.MapPath("~/Uploads/Images" + file.FileName));
 
-            var url = "/Uploads/Images" + file.FileName;
+            string filePath = Server.MapPath("~/Uploads/Images/");
+            string fileName = DateTime.Now.ToString("yyyyMMddHHmmss");
+            string extension = Path.GetExtension(file.FileName);
+
+            filePath = filePath + fileName + extension;
+            file.SaveAs(filePath);
+
+            var url = "/Uploads/Images/" + fileName + extension;
 
             return url;
         }

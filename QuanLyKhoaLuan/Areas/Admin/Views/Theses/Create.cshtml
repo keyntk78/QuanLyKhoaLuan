@@ -1,0 +1,235 @@
+﻿@model QuanLyKhoaLuan.Models.Thesis
+
+@{
+    ViewBag.Title = "Thêm khóa luận";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<div class="content-body">
+    <div class="container-fluid">
+
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Thêm khóa luận</h4>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Home")">Bảng điều khiển</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "Theses")">Danh sách khóa luận</a></li>
+                    <li class="breadcrumb-item active">Thêm khóa luận</li>
+                </ol>
+            </div>
+        </div>
+
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+
+                            <div class="col-sm-12 p-md-0 justify-content-sm-star mt-2 mt-sm-0 d-flex">
+                                <h4>Thông tin khóa luận</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="form-group">
+                                    <label class="pl-4">Mã khóa luận <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control", placeholder = "Nhập mã khóa luận ...", id="code" } })
+                                        @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="pl-4">Đề tài <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="topic_id">
+                                            @foreach (var item in (IEnumerable<QuanLyKhoaLuan.ModelViews.TopicDepartmet>)ViewBag.topic_id)
+                                            {
+                                                var selected = "";
+                                                if (Model != null)
+                                                {
+
+                                                    if (Model.topic_id == item.topic_id)
+                                                    {
+                                                        selected = "selected";
+                                                    }
+                                                }
+                                                <option value="@item.topic_id" @selected>@item.name (@item.name_department)</option>
+                                            }
+                                        </select>
+                                        @*@Html.DropDownList("topic_id", null, htmlAttributes: new { @class = "form-control" })*@
+                                        @Html.ValidationMessageFor(model => model.topic_id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="pl-4">Lớp <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("major_id", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.major_id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="pl-4">Niên khóa <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        @Html.DropDownList("school_year_id", null, htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.school_year_id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="pl-4">Hội đồng <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="council_id">
+                                            
+                                            @foreach (var item in ViewBag.council_id)
+                                            {
+                                                var selected = "";
+                                                if (Model != null)
+                                                {
+
+                                                    if (Model.council_id == item.council_id)
+                                                    {
+                                                        selected = "selected";
+                                                    }
+                                                }
+
+                                                <option value="@item.council_id" @selected >@item.name</option>
+                                            }
+                                        </select>
+
+                                        @*@Html.DropDownList("council_id", null, htmlAttributes: new { @class = "form-control" })*@
+                                        @Html.ValidationMessageFor(model => model.council_id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="pl-4">Giảng viên hướng dẫn <span class="text-red">(*)</span></label>
+                                    <div class="col-md-10">
+                                        <select class="form-control" name="lecturer_id">
+                                            @foreach (var item in (IEnumerable<QuanLyKhoaLuan.ModelViews.LecturerDepartment>)ViewBag.lecturer_id)
+                                            {
+                                                var selected = "";
+                                                if (Model != null)
+                                                {
+
+                                                    if (Model.lecturer_id == item.lecturer_id)
+                                                    {
+                                                        selected = "selected";
+                                                    }
+                                                }
+
+                                                <option value="@item.lecturer_id" @selected>@item.code - @item.full_name (@item.name_department)</option>
+                                            }
+                                        </select>
+                                        @*@Html.DropDownList("lecturer_id", null, htmlAttributes: new { @class = "form-control" })*@
+                                        @Html.ValidationMessageFor(model => model.lecturer_id, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="pl-4">Trạng thái </label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.status)
+                                        @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="card p-bt90">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10 text-center">
+                                    <input type="submit" value="Thêm" class="btn btn-primary" />
+                                    <input type="button" id="btn-reset" value="Reset" class="btn btn-danger ml-3" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card p-bt90">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="pl-4">Ngày bắt đầu <span class="text-red">(*)</span></label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.start_date, new { htmlAttributes = new { @class = "form-control date", @type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.start_date, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="pl-4">Ngày kết thúc <span class="text-red">(*)</span></label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.end_date, new { htmlAttributes = new { @class = "form-control date", @type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.end_date, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="pl-4">Ngày bắt đầu nộp đề cương <span class="text-red">(*)</span></label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.start_date_outline, new { htmlAttributes = new { @class = "form-control date", @type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.start_date_outline, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="pl-4">Ngày kết thúc nộp đề cương <span class="text-red">(*)</span></label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.end_date_outline, new { htmlAttributes = new { @class = "form-control date", @type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.end_date_outline, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="pl-4">Ngày bắt đầu nộp báo cáo <span class="text-red">(*)</span></label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.start_date_thesis, new { htmlAttributes = new { @class = "form-control date", @type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.start_date_thesis, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="pl-4">Ngày kết thúc nộp bào cáo <span class="text-red">(*)</span></label>
+                                <div class="col-md-12">
+                                    @Html.EditorFor(model => model.end_date_thesis, new { htmlAttributes = new { @class = "form-control date", @type = "date" } })
+                                    @Html.ValidationMessageFor(model => model.end_date_thesis, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+
+@section scripts {
+    <script>
+        $(function () {
+            // đăng ký sự kiên click
+            $('#btn-reset').click(function () {
+                $("#code").val("");
+                $(".date").val("");
+            });
+        });
+    </script>
+}

@@ -30,8 +30,7 @@ namespace QuanLyKhoaLuan.Models
         [StringLength(255)]
         public string address { get; set; }
         [Range(0, 10, ErrorMessage ="Điểm từ 0.0 - 10.0")]
-        [Required(ErrorMessage = "Điểm không được để trống")]
-        public double gpa { get; set; }
+        public Nullable<double> gpa { get; set; }
         public System.Guid user_id { get; set; }
      
         public System.Guid class_id { get; set; }

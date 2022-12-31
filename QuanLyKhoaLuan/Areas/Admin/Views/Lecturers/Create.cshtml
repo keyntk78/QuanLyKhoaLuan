@@ -43,7 +43,7 @@
                                 <div class="form-group">
                                     <label class="pl-4">Mã giảng viên <span class="text-red">(*)</span></label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control", id = "code" } })
+                                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập mã giảng viên...", id = "code" } })
                                         @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -51,7 +51,7 @@
                                 <div class="form-group">
                                     <label class="pl-4">Họ tên <span class="text-red">(*)</span></label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.full_name, new { htmlAttributes = new { @class = "form-control", id = "full_name" } })
+                                        @Html.EditorFor(model => model.full_name, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập tên giảng viên...", id = "full_name" } })
                                         @Html.ValidationMessageFor(model => model.full_name, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -59,7 +59,7 @@
                                 <div class="form-group">
                                     <label class="pl-4">Email <span class="text-red">(*)</span></label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", id = "email" } })
+                                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập email ...", id = "email" } })
                                         @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -67,7 +67,7 @@
                                 <div class="form-group">
                                     <label class="pl-4">Số điện thoại</label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", id = "phone" } })
+                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập số điện thoại ...", id = "phone" } })
                                         @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
@@ -93,7 +93,7 @@
                                 <div class="form-group">
                                     <label class="pl-4">Địa chỉ</label>
                                     <div class="col-md-10">
-                                        @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", id = "address" } })
+                                        @Html.EditorFor(model => model.address, new { htmlAttributes = new { @class = "form-control", placeHolder = "Nhập địa chỉ ...", id = "address" } })
                                         @Html.ValidationMessageFor(model => model.address, "", new { @class = "text-danger" })
                                     </div>
                                 </div>

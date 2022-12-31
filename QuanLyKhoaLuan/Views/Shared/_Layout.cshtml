@@ -42,7 +42,7 @@
         <div class="content-body">
             <!-- row -->
             <div class="container-fluid">
-                <div class="row">
+                <div class="row" id="status_card">
                     <div class="col-lg-3 col-sm-6">
                         <div class="card card-height">
                             <div class="stat-widget-one card-body">
@@ -51,7 +51,10 @@
                                 </div>
                                 <div class="stat-content d-inline-block">
                                     <div class="stat-text">Danh sách đề tài</div>
-                                    <div class="stat-digit">9/10</div>
+                                    <div class="stat-digit" id="theses"></div>
+                                    <div class="stat-digit" id="these_register">
+
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -64,8 +67,10 @@
                                 </div>
                                 <div class="stat-content d-inline-block">
                                     <div class="stat-text">Nộp đề cương</div>
-                                    <div class="stat-digit"><span class="badge badge-info">Đã nộp</span></div>
-                                    <div class="stat-text"><button class="btn btn-sm btn-secondary">Nộp đề cương</button></div>
+
+                                    <div class="stat-digit" id="date_outline"></div>
+                                    <div class="stat-digit"  id="status_outline"></div>
+                                    <div class="stat-text" id="btn_outline"></div>
                                 </div>
                             </div>
                         </div>
@@ -78,8 +83,11 @@
                                 </div>
                                 <div class="stat-content d-inline-block">
                                     <div class="stat-text">Nộp khóa luận</div>
-                                    <div class="stat-digit"><span class="badge badge-danger">Chưa nộp</span></div>
-                                    <div class="stat-text"><button class="btn btn-sm btn-secondary">Nộp khóa luận</button></div>
+
+                                    <div class="stat-digit" id="date_thesis"></div>
+                                    <div class="stat-digit" id="status_thesis"></div>
+                                    <div class="stat-text" id="btn_thesis"></div>
+
                                 </div>
                             </div>
                         </div>
@@ -92,18 +100,17 @@
                                 </div>
                                 <div class="stat-content d-inline-block">
                                     <div class="stat-text">Chi tiết điểm</div>
-                                    <div class="stat-digit"><span class="badge badge-danger">Chưa chấm điểm</span></div>
-                                    <div class="stat-text"><button class="btn btn-sm btn-secondary">Xem chi tiết</button></div>
+
+                                    <div class="stat-digit" id="date"></div>
+                                    <div class="stat-digit" id="status_result"></div>
+                                    <div class="stat-text" id="btn_detail"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-
                 @RenderBody()
-
-
             </div>
         </div>
 
@@ -114,12 +121,8 @@
                 <p>Distributed by <a href="https://themewagon.com/" target="_blank">NTU</a></p>
             </div>
         </div>
-
-
-
-
     </div>
-   
+
 
     <script src="~/assets/Admin/vendor/global/global.min.js"></script>
     <script src="~/assets/Admin/js/quixnav-init.js"></script>
@@ -137,11 +140,84 @@
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
 
-    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)*@
+    @RenderSection("scripts", required: false)
 
-    <!-- Circle progress -->
+
+    <script>
+        status_card();
+
+        function status_card() {
+            $.ajax({
+                url: "/PageStudent/StatusCard",
+                type: "GET",
+                data: {},
+                success: function (res) {
+                    if (res.Success) {
+                        var theses = `<span>${res.Data.Count_registered_thesis}/${res.Data.Count_theses} </span>`;
+                        $('#theses').html(theses);
+                        var these_register = `<span class="badge badge-info">Đã đăng ký</span>`
+                        $('#these_register').html(these_register);
+
+                        var date_outline = `<span>${getDateIfDate(res.Data.Thesis.thesis.start_date_outline)} - ${getDateIfDate(res.Data.Thesis.thesis.end_date_outline)} </span>`;
+                        $('#date_outline').html(date_outline);
+
+                        var date_thesis = `<span>${getDateIfDate(res.Data.Thesis.thesis.start_date_thesis)} - ${getDateIfDate(res.Data.Thesis.thesis.end_date_thesis)} </span>`;
+                        $('#date_thesis').html(date_thesis);
+
+                        var date = `<span>${getDateIfDate(res.Data.Thesis.thesis.start_date)} - ${getDateIfDate(res.Data.Thesis.thesis.end_date)} </span>`;
+                        $('#date').html(date);
+
+                        var status_outline = "";
+                        var btn_outline = "";
+                        var status_thesis = "";
+                        var btn_thesis = "";
+                        var status_result = "";
+                        var btn_detail = "";
+
+                   
+
+                        if (res.Data.Thesis.thesis.file_outline == null) {
+                            status_outline += `<span class="badge badge-danger">Chưa nộp</span>`;
+                            btn_outline += `<a href="/PageStudent/SubmitOutline/${res.Data.Thesis.thesis.thesis_id}" class="btn btn-sm btn-secondary">Nộp đề cương</a>`;
+                        } else {
+                            status_outline += `<span class="badge badge-info">Đã nộp</span>`;
+                        }
+                        $('#status_outline').html(status_outline);
+                        $('#btn_outline').html(btn_outline);
+
+
+                        if (res.Data.Thesis.thesis.file_thesis == null) {
+                            status_thesis += `<span class="badge badge-danger">Chưa nộp</span>`;
+                            btn_thesis += `<a href="/PageStudent/SubmitThese/${res.Data.Thesis.thesis.thesis_id}" class="btn btn-sm btn-secondary">Nộp khóa luận</a>`;
+                        } else {
+                            status_thesis += `<span class="badge badge-info">Đã nộp</span>`;
+                        }
+                        $('#status_thesis').html(status_thesis);
+                        $('#btn_thesis').html(btn_thesis);
+
+                        if (res.Data.Thesis.thesis.result == null) {
+                            status_result += `<span class="badge badge-danger">Chưa có kết quả</span>`;
+                            
+                        } else {
+                            status_result += `<span class="badge badge-info">Đã có</span>`;
+                            btn_detail += `<button class="btn btn-sm btn-secondary">Xem chi tiết</button>`;
+                        }
+                        $('#status_result').html(status_result);
+                        $('#btn_detail').html(btn_detail);
+                        
+
+                    } 
+                } 
+            });
+        }
+
+        function getDateIfDate (d) {
+            var m = d.match(/\/Date\((\d+)\)\//);
+            return m ? (new Date(+m[1])).toLocaleDateString('es-SV', { month: '2-digit', day: '2-digit', year: 'numeric' }) : d;
+        }
+    </script>
 
 </body>
 

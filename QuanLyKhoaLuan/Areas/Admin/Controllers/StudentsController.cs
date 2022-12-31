@@ -283,8 +283,6 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             }
         }
 
-
-
         public ActionResult Detail(Guid id)
         {
 

@@ -21,6 +21,9 @@
     <link href="~/assets/fontawesome-free-6.2.1-web/css/brands.css" rel="stylesheet">
     <link href="~/assets/fontawesome-free-6.2.1-web/css/solid.css" rel="stylesheet">
     <link href="~/Content/Site.css?t=@DateTime.Now" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/css/multi-select-tag.css">
+
+
     @Scripts.Render("~/bundles/modernizr")
 </head>
 
@@ -50,7 +53,7 @@
             Html.RenderPartial("_NavPartialView");
         }
 
-    
+
 
         @RenderBody()
 
@@ -61,8 +64,8 @@
             </div>
         </div>
         <!--**********************************
-        Footer end
-    ***********************************-->
+            Footer end
+        ***********************************-->
 
 
 
@@ -89,6 +92,8 @@
     <script src="~/assets/Admin/js/plugins-init/sweetalert-init.js"></script>
 
     <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag/dist/js/multi-select-tag.js"></script>
+
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

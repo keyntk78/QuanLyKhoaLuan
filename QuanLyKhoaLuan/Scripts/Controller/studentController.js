@@ -287,8 +287,12 @@
                     $('#avatarDetail').attr("src", res.Data.user.avatar);
                     var date = studentController.getDateIfDate(res.Data.student.birthday);
                     var gender = "Nam";
+                    var gpa = "Chưa có";
                     if (res.Data.student.gender == 0) {
                         gender = "Nữ";
+                    }
+                    if (res.Data.student.gpa != null) {
+                        gpa = res.Data.student.gpa
                     }
 
                     $('#code').text(res.Data.student.code);
@@ -302,6 +306,8 @@
                     $('#major').text(res.Data.major.name);
                     $('#classes').text(res.Data.classes.name);
                     $('#shool_year').text(res.Data.school_year.name);
+                    $('#gpa').text(gpa);
+
 
 
                 } else {

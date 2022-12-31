@@ -4,77 +4,189 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+@if (ViewBag.Status != null)
+{
+    <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <div class="alert alert-primary alert-dismissible alert-alt solid fade show">
+            <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                <span><i class="mdi mdi-close"></i></span>
+            </button>
+            <strong>Thông báo! </strong> @ViewBag.Status
+        </div>
+    </div>
+}
+
+
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item active"><span>Trang chủ</span></li>
+        </ol>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">ĐĂNG KÝ KHÓA LUẬN TỐT NGHIỆP CHO SINH VIÊN KHOA CÔNG NGHỆ THÔNG TIN BỘ MÔN CÔNG NGHỆ PHẦN MỀM LỚP NIÊN KHÓA 2019-2023</h4>
+            <div class="card-header" id="card_header">
+                @*<h4 class="card-title">ĐĂNG KÝ KHÓA LUẬN TỐT NGHIỆP CHO SINH VIÊN KHOA CÔNG NGHỆ THÔNG TIN BỘ MÔN CÔNG NGHỆ PHẦN MỀM LỚP NIÊN KHÓA 2019-2023</h4>*@
             </div>
             <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table student-data-table m-t-20">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Tên đề tài</th>
-                                <th>Niên Khóa</th>
-                                <th>Giáo viên hường dẫn</th>
-                                <th>Hội Đồng</th>
-                                <th>Khoa/Bộ Môn</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Webssite bán hàng</td>
-                                <td>
-                                    2019-2023
-                                </td>
-                                <td>
-                                    Nguyễn Thị A
-                                </td>
-                                <td>
-                                    Hội đồng
-                                </td>
-                                <td>Công nghệ phần mềm</td>
-                                <td><button class="btn-sm btn-secondary">Đăng ký</button></td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Webssite bán hàng</td>
-                                <td>
-                                    2019-2023
-                                </td>
-                                <td>
-                                    Nguyễn Thị A
-                                </td>
-                                <td>
-                                    Hội đồng
-                                </td>
-                                <td>Công nghệ phần mềm</td>
-                                <td><button class="btn-sm btn-info disabled">Đăng ký</button></td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>Webssite bán hàng</td>
-                                <td>
-                                    2019-2023
-                                </td>
-                                <td>
-                                    Nguyễn Thị A
-                                </td>
-                                <td>
-                                    Hội đồng
-                                </td>
-                                <td>Công nghệ phần mềm</td>
-                                <td><span class="badge badge-info">Đã đăng ký</span></td>
-                            </tr>
+                <div class="table-responsive" id="table">
 
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+@section scripts {
+    <script>
+
+        loadData();
+
+        $('body').on('click', '#btnRegisterThesis', function (e) {
+
+
+            var id = $(this).data('id');
+
+            swal({
+                title: "Bạn có chắc đăng ký!",
+                text: "Thời gian hủy đăng ký là 1 tuần!",
+                type: "question",
+                confirmButtonText: "Đăng ký",
+                showCancelButton: true,
+                cancelButtonText: "Đóng"
+            }).then((result) => {
+                if (result.value) {
+                    RegisterThesis(id);
+                }
+            });
+            //userController.UpdateActive(id);
+        });
+
+        function loadData() {
+            $.ajax({
+                url: '/PageStudent/GetThesisData',
+                type: 'GET',
+                data: {},
+                success: function (res) {
+                    if (res.Success) {
+                        var html = "";
+                        var table = "";
+                        var item = res.Data;
+                        var val = res.Thesis_registration;
+                        var thesis_regis = "";
+                        html += `<h4 class="card-title">ĐĂNG KÝ KHÓA LUẬN TỐT NGHIỆP CHO SINH VIÊN KHOA ${res.Student.Class.Major.Department.name} BỘ MÔN ${res.Student.Class.Major.name} NIÊN KHÓA ${res.Student.School_year.name} </h4>`;
+
+
+                        table += ` <table class="table student-data-table m-t-20">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên đề tài</th>
+                                            <th>Niên Khóa</th>
+                                            <th>Giáo viên hường dẫn</th>
+                                            <th>Hội Đồng</th>
+                                            <th>Khoa/Bộ Môn</th>
+                                            <th>Đăng ký</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
+
+
+                        for (let i = 0; i < res.Data.length; i++) {
+
+                            table += "<tr>";
+                            table += ` <td>${i + 1}</td>`;
+                            table += ` <td>${item[i].topic.name}</td>`;
+                            table += ` <td>${item[i].school_year.name}</td>`;
+                            table += ` <td>${item[i].lecturer.full_name}</td>`;
+                            table += ` <td>${item[i].council.name}</td>`;
+                            table += ` <td>${item[i].major.name}</td>`;
+
+                            if (res.Thesis_registration.length > 0) {
+
+                                if (res.IsRegistered) {
+                                    for (let j = 0; j < res.Thesis_registration.length; j++) {
+                                        if (item[i].theses.thesis_id == val[j]) {
+                                            thesis_regis = `<td><span class="badge badge-info">Đã đăng ký</span></td>`;
+                                            break;
+                                        } else {
+                                            thesis_regis = `<td><button class="btn-sm btn-info disabled">Đăng ký</button></td>`;
+                                        }
+                                    }
+                                } else {
+                                    for (let j = 0; j < res.Thesis_registration.length; j++) {
+                                        if (item[i].theses.thesis_id == val[j]) {
+                                            thesis_regis = `<td><span class="badge badge-info">Đã đăng ký</span></td>`;
+                                            break;
+                                        } else {
+                                            thesis_regis = `<td><button data-id="${item[i].theses.thesis_id}" class="btn-sm btn-secondary" id="btnRegisterThesis">Đăng ký</button></td>`;
+                                        }
+                                    }
+                                }
+
+
+                            } else {
+                                thesis_regis = `<td><button data-id="${item[i].theses.thesis_id}" class="btn-sm btn-secondary" id="btnRegisterThesis">Đăng ký</button></td>`;
+                            }
+
+
+
+
+                            table += thesis_regis;
+
+                            table += `</tr >`
+                        }
+                        table += ` </tbody></table>`;
+
+                        $('#card_header').html(html);
+                        $('#table').html(table);
+                        //card(res.Data.length)
+                    } else {
+                        console.log("chưa đủ")
+                        var html = "";
+                        html += `<h4 class="card-title">Chưa đủ điều kiện</h4>`;
+                        $('#card_header').html(html);
+                    }
+                }
+            })
+        }
+
+        function RegisterThesis(id) {
+            $.ajax({
+                url: "/PageStudent/Thesis_registration",
+                type: "POST",
+                data: { id: id },
+                success: function (res) {
+                    if (res.Success) {
+                        Swal.fire(
+                            'Đã đăng ký!',
+                            'Bạn đã đăng ký khóa luận.',
+                            'success'
+                        )
+                        loadData();
+                        status_card();
+                    } else {
+                        Swal.fire(
+                            'Đăng ký thất bại!',
+                            'Thất bại.',
+                            'error'
+                        )
+                    }
+                }
+            });
+        }
+    </script>
+}
+
+
+
+
+

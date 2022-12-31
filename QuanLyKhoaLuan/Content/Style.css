@@ -24,7 +24,7 @@ img.logo {
 }
 
 .card.card-height {
-    min-height: 150px;
+    min-height: 170px;
 }
 
 .stat-icon.d-inline-block {
@@ -50,4 +50,12 @@ img.logo {
 
 li.nav-item.dropdown.header-profile {
     color:#fff
+}
+
+.card-title {
+    text-transform: uppercase;
+}
+
+.content-body.body-info {
+    padding-top: 10px;
 }
