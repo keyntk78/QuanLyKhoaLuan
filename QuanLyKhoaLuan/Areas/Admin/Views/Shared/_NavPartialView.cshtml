@@ -6,9 +6,6 @@
 <div class="quixnav">
     <div class="quixnav-scroll">
         <ul class="metismenu" id="menu">
-
-            @if (session.code_role == "admin")
-            {
                 <li>
                     <a class="" href="@Url.Action("Index", "Home")">
                         <i class="icon fa-solid fa-table-columns"></i><span class="">Bảng điều khiển</span>
@@ -84,30 +81,6 @@
                         <li><a href="~/Admin/Users">Quản trị viên</a></li>
                     </ul>
                 </li>
-            }
-            else
-            {
-                <li>
-                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                        <i class="icon icon-single-04"></i><span class="nav-text">Quản lý giảng viên</span>
-                    </a>
-                    <ul aria-expanded="false">
-                        <li><a href="~/assets/Admin/index.html">Giảng viên</a></li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                        <i class="icon fa-solid fa-user"></i><span class="nav-text">Quản lý sinh viên</span>
-                    </a>
-                    <ul aria-expanded="false">
-                        <li><a href="~/assets/Admin/index.html">Sinh viên</a></li>
-                    </ul>
-                </li>
-
-            }
-
-
         </ul>
     </div>
 </div>

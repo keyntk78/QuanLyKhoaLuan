@@ -1,5 +1,7 @@
 ﻿using QuanLyKhoaLuan.Common;
+using QuanLyKhoaLuan.Helpper;
 using QuanLyKhoaLuan.Models;
+using QuanLyKhoaLuan.ModelViews;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -51,7 +53,8 @@ namespace QuanLyKhoaLuan.Controllers
                         if (checkEmail > 0)
                         {
                             ModelState.AddModelError("", "Email đã tồn tại");
-                        } else
+                        }
+                        else
                         {
                             user.full_name = model.full_name;
                             user.email = model.email;
@@ -70,7 +73,7 @@ namespace QuanLyKhoaLuan.Controllers
 
                             TempData["status"] = "Cập nhật thông tin thành công";
                             return RedirectToAction("Index", "UserInfo");
-                        } 
+                        }
                     }
                 }
                 catch (Exception e)
@@ -99,6 +102,45 @@ namespace QuanLyKhoaLuan.Controllers
 
             return url;
         }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePassword model)
+        {
+            if (ModelState.IsValid)
+            {
+                var password = model.password.ToMD5();
+                var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
+                var user = db.Users.Find(seesion.id);
+                if(user.password == password)
+                {
+                    user.password = model.newPassword.ToMD5();
+                    seesion.password = model.newPassword.ToMD5();
+                    db.Entry(user).State = EntityState.Modified;
+                    var rs = db.SaveChanges();
+                    if (rs != 0)
+                    {
+                        TempData["status"] = "Đổi mật khẩu thành công!";
+                        return RedirectToAction("Index", "PageStudent");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Đổi mật khẩu thất bại");
+                        return RedirectToAction("Index", "PageStudent");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Mật khẩu không đúng");
+                }
+            }
+            return View();
+        }
+
+
     }
 
 

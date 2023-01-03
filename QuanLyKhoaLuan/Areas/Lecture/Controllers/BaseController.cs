@@ -6,11 +6,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace QuanLyKhoaLuan.Areas.Admin.Controllers
+namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
 {
     public class BaseController : Controller
     {
-        // GET: Admin/Base
+        // GET: Lecture/Base
         protected override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var session = (UserLogin)Session[CommonConstants.USER_SESSION];
@@ -19,9 +19,10 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             {
                 filterContext.Result = new RedirectToRouteResult(new
                     RouteValueDictionary(new { controller = "Login", action = "Index", area = "" }));
-            } else
+            }
+            else
             {
-                if (session.code_role == "lecture")
+                if (session.code_role == "admin")
                 {
                     filterContext.Result = new RedirectToRouteResult(new
                     RouteValueDictionary(new { controller = "Login", action = "Index", area = "" }));

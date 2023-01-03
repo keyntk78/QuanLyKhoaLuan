@@ -128,6 +128,8 @@ namespace QuanLyKhoaLuan.Controllers
             thesis_Registration.updated_at = DateTime.Now;
             db.thesis_Registrations.Add(thesis_Registration);
             var rs = db.SaveChanges();
+            var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
+            seesion.thesis_Registration = thesis_Registration.thesis_registration_id;
             if (rs > 0)
             {
                 return Json(new
@@ -283,12 +285,12 @@ namespace QuanLyKhoaLuan.Controllers
             if (extension == ".docx" || extension == ".doc" || extension == ".pdf")
             {
 
-                string filePath = Server.MapPath("~/Uploads/These/");
+                string filePath = Server.MapPath("~/Uploads/Theses/");
                 string fileName = DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + file.FileName;
 
                 filePath = filePath + fileName;
                 file.SaveAs(filePath);
-                string url = "/Uploads/These/" + fileName;
+                string url = "/Uploads/Theses/" + fileName;
 
                 return Json(new
                 {
@@ -308,5 +310,86 @@ namespace QuanLyKhoaLuan.Controllers
             }
         }
 
+        public ActionResult RegisteredTopic(Guid id)
+        {
+
+            var thesis_Registration = db.thesis_Registrations.Find(id);
+
+            DateTime date = (DateTime)thesis_Registration.created_at;
+
+            var cancel_date = date.AddDays(7) ;
+            var check = false;
+            var date_now = DateTime.Now;
+            if(date_now < cancel_date)
+            {
+                check= true;
+            }
+
+            var thesis = db.Theses.Find(thesis_Registration.thesis_id);
+            var member_council = db.detail_Councils.Where(d=>d.council_id == thesis.council_id).ToList();
+
+            //foreach(var item in member_council)
+            //{
+            //    item.Lecturer.full_name
+            //}
+
+            ViewBag.member_council = member_council;
+            ViewBag.checkDate = check;
+            ViewBag.id = thesis_Registration.thesis_registration_id;
+            return View(thesis);
+        }
+
+        
+        public ActionResult CancelRegister(Guid id)
+        {
+
+            var thesis_Registration = db.thesis_Registrations.Find(id);
+            var thesis = db.Theses.Find(thesis_Registration.thesis_id);
+            thesis.file_outline = null;
+            thesis.file_thesis = null;
+            thesis.result = null;
+            thesis.total_score = null;
+            thesis.instructor_score = null;
+            thesis.status = false;
+            var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
+            seesion.thesis_Registration = null;
+
+            db.thesis_Registrations.Remove(thesis_Registration);
+
+            var rs = db.SaveChanges();
+
+            if (rs != 0)
+            {
+                TempData["status"] = "Đã hủy đăng ký đề tài thành công!";
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Hủy đăng ký đề tài thất bại");
+                return RedirectToAction("Index");
+            }
+        }
+
+        public FileResult DownloadOutline(Guid id)
+        {
+            var thesis = db.Theses.Find(id);
+            var file_outline = thesis.file_outline;
+            var file_name = Path.GetFileName(file_outline);
+            var path = "~" + thesis.file_outline;
+
+            string filePath = Server.MapPath(path);
+            return File(filePath, "application/vnd.ms-excel", file_name);
+        }
+
+        public FileResult DownloadThese(Guid id)
+        {
+            var thesis = db.Theses.Find(id);
+            var file_thesis = thesis.file_thesis;
+            var file_name = Path.GetFileName(file_thesis);
+            var path = "~" + thesis.file_thesis;
+
+            string filePath = Server.MapPath(path);
+            return File(filePath, "application/vnd.ms-excel", file_name);
+        }
     }
 }

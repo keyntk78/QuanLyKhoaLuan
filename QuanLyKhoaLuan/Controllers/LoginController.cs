@@ -22,6 +22,8 @@ namespace QuanLyKhoaLuan.Controllers
             return View();
         }
 
+
+
         [HttpPost]
         public ActionResult Login(LoginModel model)
         {
@@ -32,7 +34,6 @@ namespace QuanLyKhoaLuan.Controllers
 
                 var result = db.Users.SingleOrDefault(u => u.username == model.username);
 
-               
 
                 if (result == null)
                 {
@@ -61,14 +62,39 @@ namespace QuanLyKhoaLuan.Controllers
                             userSession.code_role = code_role;
                             userSession.avatar = result.avatar;
 
+
+                            if (code_role == "student")
+                            {
+                                var student = db.Students.SingleOrDefault(s => s.user_id == result.user_id);
+                                var school_year = db.School_years.Find(student.school_year_id);
+                                var date = "01/12/" + (DateTime.Parse(school_year.end_date.ToString()).Year - 1).ToString();
+                                var registration_start_date = DateTime.Parse(date);
+                                var registration_end_date = school_year.end_date;
+                                var thesis = db.thesis_Registrations
+                                          .Join(db.Theses, x => x.thesis_id, t => t.thesis_id, (x, t) => new { x, thesis = t })
+                                          .Where(a => a.x.student_id == student.student_id && a.thesis.start_date >= registration_start_date && a.thesis.end_date < registration_end_date)
+                                          .FirstOrDefault();
+                                if(thesis != null)
+                                {
+                                    userSession.thesis_Registration = thesis.x.thesis_registration_id;
+                                }
+                            }
+
+
+
+
                             Session.Add(CommonConstants.USER_SESSION, userSession);
 
-                            if(code_role == "student")
+                            if (code_role == "student")
                             {
                                 return RedirectToAction("Index", "PageStudent");
-                            } else
+                            } 
+                            else if(code_role == "admin")
                             {
                                 return Redirect("~/admin/home");
+                            } else
+                            {
+                                return Redirect("~/Lecture/HomeLecture");
                             }
                         }
                         else
@@ -81,7 +107,7 @@ namespace QuanLyKhoaLuan.Controllers
                 }
             }
 
-            return View("Index",model);
+            return View("Index", model);
         }
 
         public ActionResult Logout()

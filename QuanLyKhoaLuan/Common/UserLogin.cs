@@ -14,7 +14,7 @@ namespace QuanLyKhoaLuan.Common
         public string password { get; set; }
         public string code_role { get; set; }
         public string avatar { get; set; }
-
+        public Nullable<System.Guid> thesis_Registration { get; set; }
 
     }
 }

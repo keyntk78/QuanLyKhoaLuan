@@ -1,0 +1,258 @@
+﻿@model QuanLyKhoaLuan.Models.Thesis
+
+@{
+    ViewBag.Title = "Thông tin khóa luận";
+    Layout = "~/Areas/Lecture/Views/Shared/_LayoutLecture.cshtml";
+}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Thông tin khóa luận</h4>
+                </div>
+            </div>
+
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "HomeLecture")">Bảng điều khiển hướng dẫn</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "InstructionalThesis")">Danh sách khóa luận</a></li>
+                    <li class="breadcrumb-item active"><span>Thông tin khóa luận</span></li>
+                </ol>
+            </div>
+        </div>
+
+        @if (ViewBag.Status != null)
+        {
+            <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <div class="alert alert-primary alert-dismissible alert-alt solid fade show">
+                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                        <span><i class="mdi mdi-close"></i></span>
+                    </button>
+                    <strong>Thông báo! </strong> @ViewBag.Status
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="col-sm-3 p-md-0 justify-content-sm-start mt-2 mt-sm-0 d-flex">
+                            <h4 class="card-title">ĐĂNG KÝ ĐỀ TÀI KHÓA LUẬN TỐT NGHIỆP</h4>
+                        </div>
+                        <div class="col-sm-9 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                            @if (ViewBag.checkDate == true)
+                            {
+                                <a href="@Url.Action("CancelRegister", "PageStudent", new {id =  ViewBag.id})" class="btn btn-danger" id="btnSearch">Hủy đăng ký</a>
+                            }
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <h4>Thông tin đề tài đã đăng ký</h4>
+                                <table class="table student-data-table m-t-20 table_color">
+                                    <tbody>
+                                        <tr>
+                                            <td>Tên đề tài:</td>
+                                            <td>@Model.Topic.name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Thời gian làm bài:</td>
+                                            <td>@Model.start_date đến @Model.end_date</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sinh viên:</td>
+                                            <td>@ViewBag.student_name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Khoa:</td>
+                                            <td>@Model.Major.Department.name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bộ Môn:</td>
+                                            <td>@Model.Major.name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Hội đồng chấm thi:</td>
+                                            <td>@Model.Council.name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Thành viên hội đồng:</td>
+                                            <td>
+                                                @foreach (var item in ViewBag.member_council)
+                                                {
+                                                    <p>@item.Lecturer.full_name</p>
+                                                }
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tổng điểm:</td>
+                                            @if (Model.total_score == null)
+                                            {
+                                                <td><span class="badge badge-danger">Chưa có kết quả</span></td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Model.total_score</td>
+                                            }
+                                        </tr>
+                                        <tr>
+                                            <td>Kết quả:</td>
+                                            @if (Model.result == null)
+                                            {
+                                                <td><span class="badge badge-danger">Chưa có kết quả</span></td>
+                                            }
+                                            else
+                                            {
+                                                <td>@Model.result</td>
+                                            }
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <div>
+                                    <h4>Thông tin đề cương</h4>
+                                    <table class="table student-data-table m-t-20 table_color">
+                                        <tbody>
+                                            <tr>
+                                                <td>Thời gian nộp đề cương:</td>
+                                                <td>@Model.start_date_outline đến @Model.end_date_outline</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Link file:</td>
+                                                @if (Model.file_outline != null)
+                                                {
+                                                    <td><a href="@Url.Action("DownloadOutline", "InstructionalThesis", new {id=Model.thesis_id})">Link download</a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+                                            <tr>
+                                                <td>Trạng thái:</td>
+                                                @if (Model.file_outline == null)
+                                                {
+                                                    <td><span class="badge badge-danger">Chưa nộp</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-success">Đã nộp</span></td>
+                                                }
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <h4>Thông tin khóa luận</h4>
+                                    <table class="table student-data-table m-t-20 table_color">
+                                        <tbody>
+                                            <tr>
+                                                <td>Thời gian nộp khóa luận:</td>
+                                                <td>@Model.start_date_thesis đến @Model.end_date_thesis</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Link file:</td>
+                                                @if (Model.file_thesis != null)
+                                                {
+                                                    <td><a href="@Url.Action("DownloadThese", "InstructionalThesis", new {id=Model.thesis_id})">Link download</a></td>
+                                                }
+                                                else
+                                                {
+                                                    <td></td>
+                                                }
+                                            </tr>
+
+                                            <tr>
+                                                <td>Trạng thái:</td>
+                                                @if (Model.file_thesis == null)
+                                                {
+                                                    <td><span class="badge badge-danger">Chưa nộp</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-success">Đã nộp</span></td>
+                                                }
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div>
+                                    <h4>Chấm điểm</h4>
+                                    <form method="post" action="@Url.Action("Detail", "InstructionalThesis")">
+                                        <table class="table student-data-table m-t-20 table_color">
+                                            <tbody>
+                                                <tr>
+                                                    <td>Điểm giáo viên hướng dẫn:</td>
+                                                    @if (Model.instructor_score == null)
+                                                    {
+                                                        <td><span class="badge badge-danger">Chưa có kết quả</span></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td>@Model.instructor_score</td>
+                                                    }
+                                                </tr>
+                                                <tr>
+                                                    @if (Model.file_thesis != null)
+                                                    {
+                                                        if (Model.instructor_score == null)
+                                                        {
+                                                            <td>
+                                                                <input type="text" placeholder="Điểm..." name="Score" class="form-control" />
+                                                                <input hidden type="text" name="ID" value="@Model.thesis_id" />
+                                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                                            </td>
+                                                            <td><button type="submit" class="btn btn-primary">Chấm điểm</button></td>
+
+                                                        }
+                                                        else
+                                                        {
+                                                            if (Model.status == false)
+                                                            {
+                                                                <td><a href="@Url.Action("UpdateStatus","InstructionalThesis", new {id = Model.thesis_id})" class="btn btn-primary">Gửi hội đồng</a></td>
+
+                                                            }
+                                                            else
+                                                            {
+                                                                <td><span class="badge badge-success">Đã gửi hội đồng</span></td>
+                                                            }
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <td></td>
+                                                        <td></td>
+                                                    }
+                                                </tr>
+
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <span class="field-validation-valid text-danger"
+                                                              data-valmsg-for="Score"
+                                                              data-valmsg-replace="true">
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

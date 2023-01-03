@@ -10,15 +10,17 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace QuanLyKhoaLuan.Areas.Admin.Controllers
+namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeLectureController : BaseController
     {
+
         private QuanLyKhoaLuanDBContext db = new QuanLyKhoaLuanDBContext();
 
-        // GET: Admin/Home
+        // GET: Lecture/HomeLecture
         public ActionResult Index()
         {
+
             if (TempData["status"] != null)
             {
                 ViewBag.Status = TempData["status"].ToString();
@@ -44,7 +46,7 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                 return View(user);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "HomeLecture");
         }
 
 
@@ -84,7 +86,7 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
                             db.SaveChanges();
 
                             TempData["status"] = "Cập nhật thông tin thành công";
-                            return RedirectToAction("Info", "Home");
+                            return RedirectToAction("Info", "HomeLecture");
                         }
                     }
                 }

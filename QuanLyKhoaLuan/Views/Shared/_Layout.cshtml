@@ -178,22 +178,25 @@
 
                    
 
+
                         if (res.Data.Thesis.thesis.file_outline == null) {
                             status_outline += `<span class="badge badge-danger">Chưa nộp</span>`;
                             btn_outline += `<a href="/PageStudent/SubmitOutline/${res.Data.Thesis.thesis.thesis_id}" class="btn btn-sm btn-secondary">Nộp đề cương</a>`;
+                            status_thesis += `<span class="badge badge-danger">Chưa nộp</span>`;
+                            btn_thesis += `<a class="btn btn-sm btn-secondary disabled">Nộp khóa luận</a>`;
                         } else {
                             status_outline += `<span class="badge badge-info">Đã nộp</span>`;
+                            if (res.Data.Thesis.thesis.file_thesis == null) {
+                                status_thesis += `<span class="badge badge-danger">Chưa nộp</span>`;
+                                btn_thesis += `<a href="/PageStudent/SubmitThese/${res.Data.Thesis.thesis.thesis_id}" class="btn btn-sm btn-secondary">Nộp khóa luận</a>`;
+
+                            } else {
+                                status_thesis += `<span class="badge badge-info">Đã nộp</span>`;
+                            }
                         }
                         $('#status_outline').html(status_outline);
                         $('#btn_outline').html(btn_outline);
 
-
-                        if (res.Data.Thesis.thesis.file_thesis == null) {
-                            status_thesis += `<span class="badge badge-danger">Chưa nộp</span>`;
-                            btn_thesis += `<a href="/PageStudent/SubmitThese/${res.Data.Thesis.thesis.thesis_id}" class="btn btn-sm btn-secondary">Nộp khóa luận</a>`;
-                        } else {
-                            status_thesis += `<span class="badge badge-info">Đã nộp</span>`;
-                        }
                         $('#status_thesis').html(status_thesis);
                         $('#btn_thesis').html(btn_thesis);
 

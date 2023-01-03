@@ -36,7 +36,10 @@ namespace QuanLyKhoaLuan.Models
 
         public string comment { get; set; }
         public bool status { get; set; }
+        [Range(0.0, 10.0, ErrorMessage ="Giá trị từ 0-10")]
+        public Nullable<double> instructor_score { get; set; }
 
+        [Range(0.0, 10.0, ErrorMessage = "Giá trị từ 0-10")]
         public Nullable<double> total_score { get; set; }
         public Nullable<int> result { get; set; }
         public System.Guid topic_id { get; set; }

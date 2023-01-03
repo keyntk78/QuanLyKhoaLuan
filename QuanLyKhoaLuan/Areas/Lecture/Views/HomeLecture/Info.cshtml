@@ -1,0 +1,193 @@
+﻿@model QuanLyKhoaLuan.Models.User
+
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Areas/Lecture/Views/Shared/_LayoutLecture.cshtml";
+}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="javascript:void(0)">Bảng điều khiển</a></li>
+                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Thông tin</a></li>
+                </ol>
+            </div>
+        </div>
+
+        @if (ViewBag.Status != null)
+        {
+            <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <div class="alert alert-primary alert-dismissible alert-alt solid fade show">
+                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                        <span><i class="mdi mdi-close"></i></span>
+                    </button>
+                    <strong>Thông báo! </strong> @ViewBag.Status
+                </div>
+            </div>
+        }
+
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="profile">
+                    <div class="profile-head">
+                        <div class="photo-content">
+                            <div class="cover-photo"></div>
+                            <div class="profile-photo">
+                                <img class="avatar-info img-fluid rounded-circle" src="@Model.avatar" />
+                            </div>
+                        </div>
+                        <div class="profile-info">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-8">
+                                    <div class="row">
+                                        <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                                            <div class="profile-name">
+                                                <h4 class="text-primary">@Model.full_name</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-sm-4 border-right-1 prf-col">
+                                            <div class="profile-email">
+                                                <h4 class="text-muted">@Model.email</h4>
+                                                <p>@Model.phone</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @using (Html.BeginForm())
+        {
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4>Thay đổi ảnh đại diện</h4>
+                            <hr />
+                            <img class="col-12 avatar-upload" id="avatarUpload" src="@Model.avatar" />
+                            <div class="custom-file text-center row mt-4">
+                                <input type="file" accept="image/*" name="fileUpload" id="fileUpload" style="display:none">
+                                <input class="form-control" id="avatar" name="avatar" style="display:none" />
+                                <input type="button" class="col-4 btn btn-primary" id="btn-upload" value="Chọn ảnh" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-body">
+
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                <h4>Cập nhật thông tin</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.user_id)
+                                @Html.HiddenFor(model => model.password)
+                                @Html.HiddenFor(model => model.username)
+                                @Html.HiddenFor(model => model.role_id)
+
+
+                                <div class="form-group">
+                                    <label class="pl-4">Tên người dùng</label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.username, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                        @Html.ValidationMessageFor(model => model.username, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="pl-4">Họ và tên</label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.full_name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.full_name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="pl-4">Email</label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.email, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="pl-4">Số điện thoại</label>
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.phone, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+
+                                        <div class="col-md-10">
+                                            @Html.EditorFor(model => model.avatar, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.avatar, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>*@
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <input type="submit" value="Cập nhật" class="btn btn-primary" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+            $(function () {
+                // đăng ký sự kiên click
+                $('#btn-upload').click(function () {
+                    $('#fileUpload').trigger("click");
+                });
+                // bắt sự kiện change data của fileupload
+                $('#fileUpload').change(function () {
+                    //kiểm tra trình duyệt có hổ trọư fomrdata
+                    if (window.FormData !== undefined) {
+                        // lấy dử liệu trên file upload
+                        var fileUpload = $('#fileUpload').get(0);
+                        var files = fileUpload.files;
+                        // tạo đối tượng form data
+                        var formData = new FormData();
+                        //đưa dữ liệu vào form
+                        formData.append('file', files[0]);
+
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Lecture/HomeLecture/UploatAvatar',
+                            contentType: false,
+                            processData: false,
+                            data: formData,
+                            success: function (urlImage) {
+                                $('#avatarUpload').attr("src", urlImage);
+                                $('#avatar').val(urlImage);
+                            },
+                            error: function (e) {
+                                alert("Có lỗi khi upload: " + e.statusText);
+                            }
+                        });
+
+                    }
+                });
+            });
+    </script>
+}

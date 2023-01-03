@@ -13,18 +13,18 @@
                     @if (session != null)
                         {
                     <li class="nav-item dropdown header-profile">
-                        @session.username
+                        @session.full_name
                     </li>
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                             <img class="avatar-header" src="@session.avatar"/>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="~/Admin/Home/Info" class="dropdown-item">
+                            <a href="@Url.Action("Info","HomeLecture")" class="dropdown-item">
                                 <i class="icon-user"></i>
                                 <span class="ml-2">Thông tin </span>
                             </a>
-                            <a href="@Url.Action("ChangePassword", "Home")" class="dropdown-item">
+                            <a href="@Url.Action("ChangePassword", "HomeLecture")" class="dropdown-item">
                                 <i class="icon-key"></i>
                                 <span class="ml-2">Đổi mật khẩu </span>
                             </a>

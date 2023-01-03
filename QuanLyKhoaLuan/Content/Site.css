@@ -47,3 +47,7 @@ img.img-detail-avatar {
 i.fa-solid.fa-file-excel {
     font-size: 50px;
 }
+
+table.table.student-data-table.m-t-20.table_color {
+    color: black;
+}

@@ -1,0 +1,129 @@
+﻿
+@{
+    ViewBag.Title = "Danh sách khóa luận hướng dẫn";
+    Layout = "~/Areas/Lecture/Views/Shared/_LayoutLecture.cshtml";
+}
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Danh sách khóa luận hướng dẫn</h4>
+                </div>
+            </div>
+
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Index", "HomeLecture")">Bảng điều khiển hướng dẫn</a></li>
+                    <li class="breadcrumb-item active"><span>Danh sách khóa luận hướng dẫn</span></li>
+                </ol>
+            </div>
+        </div>
+
+        @if (ViewBag.Status != null)
+        {
+            <div class="col-sm-12 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <div class="alert alert-primary alert-dismissible alert-alt solid fade show">
+                    <button type="button" class="close h-100" data-dismiss="alert" aria-label="Close">
+                        <span><i class="mdi mdi-close"></i></span>
+                    </button>
+                    <strong>Thông báo! </strong> @ViewBag.Status
+                </div>
+            </div>
+        }
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="col-sm-2 p-md-0">
+
+                        </div>
+                        <div class="col-sm-10 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                            <select class="form-control col-3 mr-2" id="select_major_id">
+                                    <option value="">--- Bộ môn ---</option>
+                                    @foreach (var item in ViewBag.major)
+                                    {
+                                        <option value="@item.major_id">@item.name</option>
+                                    }
+                                </select>
+                                <select class="form-control col-2 mr-2" id="select_shoolyear_id">
+                                    <option value="">--- Niên Khóa ---</option>
+                                    @foreach (var item in ViewBag.shool_year)
+                                    {
+                                        <option value="@item.school_year_id">@item.name</option>
+                                    }
+                                </select>
+                                <select class="form-control col-3 mr-2" id="status">
+                                    <option value="">--- Tình trạng---</option>
+                                    <option value="true">Hoàn Thành</option>
+                                    <option value="false">Chưa hoàn thành</option>
+                                </select>
+                                <input type="text" class="form-control col-2 pl-2 mr-2" id="keywork" placeholder="Tìm kiếm ..." />
+                                <button type="button" class="btn btn-primary" id="btnSearch">Tìm kiếm</button>
+                        </div>
+                    </div>
+                    <div class="card-header">
+                        <div class="col-sm-3 p-md-0 justify-content-sm-start mt-2 mt-sm-0 d-flex">
+
+                        </div>
+                        <div class="col-sm-9 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive table">
+                            <table class="table table-bordered table-striped text-table-color verticle-middle table-responsive-sm col-12">
+                                <thead>
+                                    <tr>
+                                        <th>Mã khóa luận</th>
+                                        <th>Tên đề tài</th>
+                                        <th>Bộ môn</th>
+                                        <th>Niên Khóa</th>
+                                        <th>Thời gian</th>
+                                        <th>Sinh viên</th>
+                                        <th>Tình trạng</th>
+                                        <th>Tổng điểm</th>
+                                        <th>Kết quả</th>
+                                        <th>Chức năng</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody id="show_data">
+                                    @* load data ajax*@
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="7" class="pagination-none-boder" id="pagination">
+                                        </td>
+                                        <td colspan="3" class="pagination-none-boder">
+                                            <div class="row d-flex justify-content-end">
+                                                <p class="col-4 pt-2">Hiển thị</p>
+                                                <select class="form-control col-3" id="pageSize">
+                                                    <option value="5" selected>5</option>
+                                                    <option value="10">10</option>
+                                                    <option value="15">15</option>
+                                                    <option value="20">20</option>
+                                                </select>
+                                                <p class="col-4 pt-2">Dòng</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/jquery.validate-vsdoc.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+    <script src="~/Scripts/Controller/instructionalThesisController.js?t=@DateTime.Now"></script>
+}

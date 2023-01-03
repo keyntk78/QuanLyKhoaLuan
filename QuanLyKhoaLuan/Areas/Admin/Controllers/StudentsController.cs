@@ -41,8 +41,6 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             db.Configuration.ProxyCreationEnabled = false;
 
 
-
-
             var results = (from s in db.Students
                            join u in db.Users on s.user_id equals u.user_id
                            join r in db.Roles on u.role_id equals r.role_id
@@ -438,6 +436,7 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
             return View(model);
         }
 
+        
 
         public FileResult DownloadExcel()
         {

@@ -29,7 +29,7 @@ namespace QuanLyKhoaLuan.Models
 
         public DbSet<Thesis> Theses { get; set; }
         public DbSet<Thesis_registration> thesis_Registrations { get; set; }
-
+        public DbSet<Score> Scores { get; set; }
 
 
     }

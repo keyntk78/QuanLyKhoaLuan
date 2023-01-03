@@ -171,6 +171,11 @@
     <Compile Include="Areas\Admin\Controllers\ThesesController.cs" />
     <Compile Include="Areas\Admin\Controllers\TopicsController.cs" />
     <Compile Include="Areas\Admin\Controllers\UsersController.cs" />
+    <Compile Include="Areas\Lecture\Controllers\BaseController.cs" />
+    <Compile Include="Areas\Lecture\Controllers\CouncilLectureController.cs" />
+    <Compile Include="Areas\Lecture\Controllers\HomeLectureController.cs" />
+    <Compile Include="Areas\Lecture\Controllers\InstructionalThesisController.cs" />
+    <Compile Include="Areas\Lecture\LectureAreaRegistration.cs" />
     <Compile Include="Common\CommonConstants.cs" />
     <Compile Include="Common\UserLogin.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -234,6 +239,14 @@
     <Compile Include="Migrations\202212300249501_addtablethese_reg.designer.cs">
       <DependentUpon>202212300249501_addtablethese_reg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202301020254544_updatatablethesis.cs" />
+    <Compile Include="Migrations\202301020254544_updatatablethesis.designer.cs">
+      <DependentUpon>202301020254544_updatatablethesis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202301021220453_addTableScore.cs" />
+    <Compile Include="Migrations\202301021220453_addTableScore.designer.cs">
+      <DependentUpon>202301021220453_addTableScore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Class.cs" />
     <Compile Include="Models\Council.cs" />
@@ -244,14 +257,17 @@
     <Compile Include="Models\QuanLyKhoaLuanDBContext.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\School_year.cs" />
+    <Compile Include="Models\Score.cs" />
     <Compile Include="Models\Student.cs" />
     <Compile Include="Models\Thesis.cs" />
     <Compile Include="Models\Thesis_registration.cs" />
     <Compile Include="Models\Topic.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="ModelViews\ChangePassword.cs" />
     <Compile Include="ModelViews\CreateCouncil.cs" />
     <Compile Include="ModelViews\LecturerDepartment.cs" />
     <Compile Include="ModelViews\LoginModel.cs" />
+    <Compile Include="ModelViews\MarkScore.cs" />
     <Compile Include="ModelViews\RegisterModel.cs" />
     <Compile Include="ModelViews\SubmitFile.cs" />
     <Compile Include="ModelViews\TopicDepartmet.cs" />
@@ -6424,10 +6440,26 @@
     <Content Include="Areas\Admin\Views\Theses\Edit.cshtml" />
     <Content Include="Areas\Admin\Views\Theses\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Theses\_DetailPartialView.cshtml" />
+    <Content Include="Areas\Admin\Views\Home\ChangePassword.cshtml" />
+    <Content Include="Areas\Admin\Views\Thesis_registration\Index.cshtml" />
+    <Content Include="Areas\Lecture\Views\web.config" />
+    <Content Include="Areas\Lecture\Views\Shared\_HeaderPartialView.cshtml" />
+    <Content Include="Areas\Lecture\Views\Shared\_LayoutLecture.cshtml" />
+    <Content Include="Areas\Lecture\Views\Shared\_NavPartialView.cshtml" />
+    <Content Include="Areas\Lecture\Views\HomeLecture\Index.cshtml" />
+    <Content Include="Areas\Lecture\Views\HomeLecture\Info.cshtml" />
+    <Content Include="Areas\Lecture\Views\HomeLecture\ChangePassword.cshtml" />
+    <Content Include="Areas\Lecture\Views\InstructionalThesis\Index.cshtml" />
+    <Content Include="Areas\Lecture\Views\InstructionalThesis\Detail.cshtml" />
+    <Content Include="Areas\Lecture\Views\CouncilLecture\Index.cshtml" />
+    <Content Include="Areas\Lecture\Views\CouncilLecture\ListThesis.cshtml" />
+    <Content Include="Areas\Lecture\Views\CouncilLecture\Detail.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\Controller\classesControler.js" />
     <Content Include="Scripts\Controller\councilController.js" />
+    <Content Include="Scripts\Controller\councilLectureController.js" />
     <Content Include="Scripts\Controller\departmentController.js" />
+    <Content Include="Scripts\Controller\instructionalThesisController.js" />
     <Content Include="Scripts\Controller\lecturersController.js" />
     <Content Include="Scripts\Controller\majorController.js" />
     <Content Include="Scripts\Controller\shool_yearController.js" />
@@ -6468,10 +6500,13 @@
     <Content Include="Views\PageStudent\SubmitOutline.cshtml" />
     <Content Include="Views\PageStudent\SubmitThese.cshtml" />
     <Content Include="Views\UserInfo\Index.cshtml" />
+    <Content Include="Views\PageStudent\RegisteredTopic.cshtml" />
+    <Content Include="Views\UserInfo\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Areas\Lecture\Data\" />
     <Folder Include="Uploads\Outline\" />
     <Folder Include="Uploads\Theses\" />
   </ItemGroup>
@@ -6527,6 +6562,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202212300249501_addtablethese_reg.resx">
       <DependentUpon>202212300249501_addtablethese_reg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202301020254544_updatatablethesis.resx">
+      <DependentUpon>202301020254544_updatatablethesis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202301021220453_addTableScore.resx">
+      <DependentUpon>202301021220453_addTableScore.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

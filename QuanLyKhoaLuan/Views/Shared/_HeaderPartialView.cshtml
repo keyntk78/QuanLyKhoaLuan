@@ -7,37 +7,42 @@
         <nav class="navbar navbar-expand">
             <div class="collapse navbar-collapse justify-content-between">
                 <div class="header-left">
-                  
+
                 </div>
                 <ul class="navbar-nav header-right">
                     @if (session != null)
-                        {
-                    <li class="nav-item dropdown header-profile">
-                        @session.full_name
-                    </li>
-                    <li class="nav-item dropdown header-profile">
-                        <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                            <img class="avatar-header" src="@session.avatar"/>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="@Url.Action("Index", "UserInfo")" class="dropdown-item">
-                                <i class="icon-user"></i>
-                                <span class="ml-2">Thông tin </span>
+                    {
+                        <li class="nav-item dropdown header-profile">
+                            @session.full_name
+                        </li>
+                        <li class="nav-item dropdown header-profile">
+                            <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+                                <img class="avatar-header" src="@session.avatar" />
                             </a>
-                            <a href="~/Admin/Home/Info" class="dropdown-item">
-                                <i class="fa-solid fa-file-word"></i>
-                                <span class="ml-2">Đề tài đã đăng ký </span>
-                            </a>
-                            <a href="~/assets/Admin/email-inbox.html" class="dropdown-item">
-                                <i class="icon-envelope-open"></i>
-                                <span class="ml-2">Đổi mật khẩu </span>
-                            </a>
-                            <a href="~/Login/Logout" class="dropdown-item">
-                                <i class="icon-key"></i>
-                                <span class="ml-2">Đăng xuất </span>
-                            </a>
-                        </div>
-                    </li>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a href="@Url.Action("Index", "UserInfo")" class="dropdown-item">
+                                    <i class="icon-user"></i>
+                                    <span class="ml-2">Thông tin </span>
+                                </a>
+
+                                @if (session.thesis_Registration != null)
+                                {
+                                    <a href="@Url.Action("RegisteredTopic", "PageStudent", new {id = session.thesis_Registration} )" class="dropdown-item">
+                                        <i class="fa-solid fa-file-word"></i>
+                                        <span class="ml-2">Đề tài đã đăng ký </span>
+                                    </a>
+                                }
+
+                                <a href="@Url.Action("ChangePassword", "UserInfo")" class="dropdown-item">
+                                    <i class="icon-key"></i>
+                                    <span class="ml-2">Đổi mật khẩu </span>
+                                </a>
+                                <a href="~/Login/Logout" class="dropdown-item">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                    <span class="ml-2">Đăng xuất </span>
+                                </a>
+                            </div>
+                        </li>
                     }
                 </ul>
             </div>
