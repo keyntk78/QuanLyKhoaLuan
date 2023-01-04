@@ -1,4 +1,5 @@
-﻿using QuanLyKhoaLuan.Common;
+﻿using DocumentFormat.OpenXml.Drawing.ChartDrawing;
+using QuanLyKhoaLuan.Common;
 using QuanLyKhoaLuan.Helpper;
 using QuanLyKhoaLuan.Models;
 using QuanLyKhoaLuan.ModelViews;
@@ -22,16 +23,18 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
         {
 
             var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
-            //var leturec
+            var lecturer = db.Lecturer.Where(x=>x.user_id == seesion.id).FirstOrDefault();
 
             if (TempData["status"] != null)
             {
                 ViewBag.Status = TempData["status"].ToString();
-                TempData.Remove("status");
+                TempData.Remove("status"); 
             }
 
-            var count_thesis_finish = db.Theses.Where(x=>x.instructor_score != null && x.lecturer_id == )
-
+            var count_thesis_finish = db.Theses.Where(x => x.instructor_score != null && x.lecturer_id == lecturer.lecturer_id).Count();
+            var count_thesis_not = db.Theses.Where(x => x.instructor_score == null && x.lecturer_id == lecturer.lecturer_id).Count();
+            ViewBag.count_thesis_finish = count_thesis_finish;
+            ViewBag.count_thesis_not = count_thesis_not;
             return View();
         }
 
