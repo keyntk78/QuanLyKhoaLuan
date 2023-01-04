@@ -17,6 +17,61 @@
                 </div>
             </div>
         }
-        Hello admin
+        <div class="row">
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="stat-widget-two card-body">
+                        <div class="stat-content">
+                            <div class="stat-text">Số lượng sinh viên </div>
+                            <div class="stat-digit"> @ViewBag.count_student</div>
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-primary w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="stat-widget-two card-body">
+                        <div class="stat-content">
+                            <div class="stat-text">Số lượng giảng viên</div>
+                            <div class="stat-digit"> @ViewBag.count_lectuter</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-pink w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="stat-widget-two card-body">
+                        <div class="stat-content">
+                            <div class="stat-text">Số lượng khóa luận</div>
+                            <div class="stat-digit"> @ViewBag.count_thesis</div>
+                        </div>
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-sm-6">
+                <div class="card">
+                    <div class="stat-widget-two card-body">
+                        <div class="stat-content">
+                            <div class="stat-text">Khóa luận đã hoàn thành</div>
+                            <div class="stat-digit"> @ViewBag.count_thesis_finish</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-success w-100" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /# card -->
+            </div>
+            <!-- /# column -->
+        </div>
     </div>
 </div>

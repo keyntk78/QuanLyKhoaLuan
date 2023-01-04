@@ -21,11 +21,17 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
         public ActionResult Index()
         {
 
+            var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
+            //var leturec
+
             if (TempData["status"] != null)
             {
                 ViewBag.Status = TempData["status"].ToString();
                 TempData.Remove("status");
             }
+
+            var count_thesis_finish = db.Theses.Where(x=>x.instructor_score != null && x.lecturer_id == )
+
             return View();
         }
 

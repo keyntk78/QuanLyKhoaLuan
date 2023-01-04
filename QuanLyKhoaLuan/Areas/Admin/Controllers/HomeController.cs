@@ -19,11 +19,20 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
         // GET: Admin/Home
         public ActionResult Index()
         {
+
+            var count_student = db.Students.Count();
+            var count_lectuter = db.Lecturer.Count();
+            var count_thesis = db.Theses.Count();
+            var count_thesis_finish = db.Theses.Where(x => x.total_score != null).Count();
             if (TempData["status"] != null)
             {
                 ViewBag.Status = TempData["status"].ToString();
                 TempData.Remove("status");
             }
+            ViewBag.count_student = count_student;
+            ViewBag.count_lectuter = count_lectuter;
+            ViewBag.count_thesis = count_thesis;
+            ViewBag.count_thesis_finish = count_thesis_finish;
             return View();
         }
 
