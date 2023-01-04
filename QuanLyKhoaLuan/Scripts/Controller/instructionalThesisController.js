@@ -1,6 +1,6 @@
 ﻿var instructionalThesisController = {
     init: function () {
-  
+
         instructionalThesisController.registerEvent();
     },
     registerEvent: function () {
@@ -99,8 +99,13 @@
 
                         var result = `<span class="badge badge-danger">Chưa có</span>`;
                         if (item[i].theses.result != null) {
-                            result = `<span class="badge badge-success">${item[i].theses.result}</span>`;
+                            if (item[i].theses.result == 1) {
+                                result = `<span class="badge badge-success">Đạt</span>`;
+                            } else {
+                                result = `<span class="badge badge-success">Chưa đạt</span>`;
+                            }
                         }
+
 
                         html += "<tr>";
                         html += ` <td>${item[i].theses.code}</td>`;

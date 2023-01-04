@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
@@ -312,7 +313,27 @@ namespace QuanLyKhoaLuan.Areas.Admin.Controllers
 
         }
 
+        public FileResult DownloadOutline(Guid id)
+        {
+            var thesis = db.Theses.Find(id);
+            var file_outline = thesis.file_outline;
+            var file_name = Path.GetFileName(file_outline);
+            var path = "~" + thesis.file_outline;
 
+            string filePath = Server.MapPath(path);
+            return File(filePath, "application/vnd.ms-excel", file_name);
+        }
+
+        public FileResult DownloadThese(Guid id)
+        {
+            var thesis = db.Theses.Find(id);
+            var file_thesis = thesis.file_thesis;
+            var file_name = Path.GetFileName(file_thesis);
+            var path = "~" + thesis.file_thesis;
+
+            string filePath = Server.MapPath(path);
+            return File(filePath, "application/vnd.ms-excel", file_name);
+        }
 
 
         // GET: Admin/Theses/Edit/5

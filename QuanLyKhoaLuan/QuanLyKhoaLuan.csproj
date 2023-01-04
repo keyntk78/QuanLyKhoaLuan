@@ -6502,6 +6502,7 @@
     <Content Include="Views\UserInfo\Index.cshtml" />
     <Content Include="Views\PageStudent\RegisteredTopic.cshtml" />
     <Content Include="Views\UserInfo\ChangePassword.cshtml" />
+    <Content Include="Views\PageStudent\DetailScore.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

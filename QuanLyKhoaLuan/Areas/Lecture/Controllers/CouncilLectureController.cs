@@ -74,7 +74,7 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
         }
 
         //int? page, int? pageSize, string keywork
-        public ActionResult GetThesislData(Guid id)
+        public ActionResult GetThesislData(Guid id, int? page, int? pageSize, string keywork)
         {
             db.Configuration.ProxyCreationEnabled = false;
 
@@ -91,14 +91,28 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
                 })
                 .Where(t=>t.thesis.council_id == id).ToList();
 
+            if (!string.IsNullOrEmpty(keywork))
+            {
+                results = results.Where(u => u.topic_name.ToLower().Contains(keywork.Trim().ToLower())
+                || u.student_name.ToLower().Contains(keywork.Trim().ToLower())
+                ).ToList();
+            }
+
+            var _pageSize = pageSize ?? 5;
+            var pageIndex = page ?? 1;
+
+            var totalPage = results.Count();
+            var numberPage = Math.Ceiling((float)totalPage / _pageSize);
+            results = results.Skip((pageIndex - 1) * _pageSize).Take(_pageSize).ToList();
+
 
             return Json(new
             {
                 Data = results,
                 TotalItem = results.Count,
-                //CurrentPage = pageIndex,
-                //NumberPage = numberPage,
-                //PageSize = _pageSize,
+                CurrentPage = pageIndex,
+                NumberPage = numberPage,
+                PageSize = _pageSize,
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -111,7 +125,7 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
             var member_council = db.detail_Councils.Where(d => d.council_id == thesis.council_id).ToList();
             var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
             var lecture = db.Lecturer.SingleOrDefault(x => x.user_id == seesion.id);
-            var score = db.Scores.SingleOrDefault(x => x.lecturer_id == lecture.lecturer_id);
+            var score = db.Scores.Where(x => x.lecturer_id == lecture.lecturer_id && x.thesis_id == thesis.thesis_id).SingleOrDefault();
             if(score != null)
             {
                 ViewBag.Score = score.score;
@@ -138,7 +152,7 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
             var member_council = db.detail_Councils.Where(d => d.council_id == thesis.council_id).ToList();
             var seesion = (UserLogin)Session[CommonConstants.USER_SESSION];
             var lecture = db.Lecturer.SingleOrDefault(x => x.user_id == seesion.id);
-            var score = db.Scores.SingleOrDefault(x => x.lecturer_id == lecture.lecturer_id);
+            var score = db.Scores.Where(x => x.lecturer_id == lecture.lecturer_id && x.thesis_id == thesis.thesis_id).FirstOrDefault();
 
             if (ModelState.IsValid)
             {
@@ -180,8 +194,8 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
                     db.SaveChanges();
                 }
 
-                score = db.Scores.SingleOrDefault(x => x.lecturer_id == lecture.lecturer_id);
-                if(score != null)
+                score = db.Scores.Where(x => x.lecturer_id == lecture.lecturer_id && x.thesis_id == thesis.thesis_id).FirstOrDefault();
+                if (score != null)
                 {
                     if (score != null)
                     {
@@ -223,14 +237,15 @@ namespace QuanLyKhoaLuan.Areas.Lecture.Controllers
                 if (score != null)
                 {
                     ViewBag.CheckScore = true;
+                    ViewBag.Score = score.score;
                 }
                 else
                 {
                     ViewBag.CheckScore = false;
+                    ViewBag.Score = null;
                 }
                 ModelState.AddModelError("", "Giá trị từ 0-10");
 
-                ViewBag.Score = score.score;
                 ViewBag.member_council = member_council;
                 ViewBag.student_name = student_name;
                 return View(thesis);

@@ -1,0 +1,79 @@
+﻿@model QuanLyKhoaLuan.Models.Thesis
+@{
+    ViewBag.Title = "Chi tiết điểm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row page-titles mx-0">
+    <div class="col-sm-6 p-md-0">
+        <div class="welcome-text">
+        </div>
+    </div>
+    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="@Url.Action("Index","PageStudent" )">Trang chủ</a></li>
+            <li class="breadcrumb-item active"><span>Chi tiết điểm</span></li>
+        </ol>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="col-sm-3 p-md-0 justify-content-sm-start mt-2 mt-sm-0 d-flex">
+                    <h4 class="card-title">CHI TIẾT ĐIỂM</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Thông tin đề tài đã đăng ký</h4>
+                        <table class="table student-data-table m-t-20">
+                            <tbody>
+                                <tr>
+                                    <td colspan="2"><b>Điểm giáo viên hướng dẫn:</b></td>
+                                </tr>
+                                <tr>
+                                    <td>@Model.Lecturer.full_name:</td>
+                                    <td>@Model.instructor_score</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><b>Điểm thành viên hội đồng</b></td>
+                                </tr>
+                                @foreach (var item in ViewBag.Score)
+                                {
+                                    <tr>
+                                        <td>@item.Lecturer.full_name: </td>
+                                        <td>@item.score</td>
+                                    </tr>
+                                }
+
+                                <tr>
+                                    <td><b>Tổng điểm</b></td>
+                                    <td><b>@Model.total_score</b></td>
+                                </tr>
+                                <tr>
+
+                                    <td><b>Kết quả</b>:</td>
+                                    @if (@Model.result == 1)
+                                    {
+                                        <td><b>Đạt</b></td>
+                                    }
+                                    else
+                                    {
+                                        <td><b>Chưa đạt</b></td>
+                                    }
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

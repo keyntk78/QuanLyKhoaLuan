@@ -121,7 +121,12 @@
 
                         var result = `<span class="badge badge-warning">Chưa có</span>`;
                         if (item[i].theses.result != null) {
-                            result = `<span class="badge badge-info">${item[i].theses.result}</span>`;
+                            if (item[i].theses.result == 1) {
+                                result = `<span class="badge badge-info">Đạt</span>`;
+
+                            } else {
+                                result = `<span class="badge badge-info">Chưa đạt</span>`;
+                            }
                         }
 
                         html += "<tr>";
@@ -225,6 +230,46 @@
                     var date = theseController.getDateIfDate(res.Data.theses.start_date) + " đến " + theseController.getDateIfDate(res.Data.theses.end_date);
                     var date_outline = theseController.getDateIfDate(res.Data.theses.start_date_outline) + " đến " + theseController.getDateIfDate(res.Data.theses.end_date_outline);
                     var date_thesis = theseController.getDateIfDate(res.Data.theses.start_date_thesis) + " đến " + theseController.getDateIfDate(res.Data.theses.end_date_thesis);
+                    var status = "";
+                    if (res.Data.theses.status == true) {
+                        status += `<span class="badge badge-success">Hoàn thành</span>`;
+                    } else {
+                        status += `<span class="badge badge-danger">Chưa hoàn thành</span>`;
+                    }
+
+                    var total_score = "";
+                    if (res.Data.theses.total_score != null) {
+                        total_score += `<span >${res.Data.theses.total_score}</span>`;
+                    } else {
+                        total_score += `<span class="badge badge-danger">Chưa có kết quả</span>`;
+                    }
+
+
+                    var result = "";
+                    if (res.Data.theses.result != null) {
+                        if (res.Data.theses.result == 1) {
+                            result += `<span class="badge badge-success">Đạt</span>`;
+                        } else {
+                            result += `<span class="badge badge-danger">Chưa đạt</span>`;
+                        }
+                       
+                    } else {
+                        result += `<span class="badge badge-danger">Chưa có kết quả</span>`;
+                    }
+
+                    var file_outline = "";
+                    if (res.Data.theses.file_outline == null) {
+                        file_outline += `<span class="badge badge-danger">Chưa nộp</span>`;
+                    } else {
+                        file_outline += `<a href="/Admin/Theses/DownloadOutline/${res.Data.theses.thesis_id}">Link download</a>`
+                    }
+
+                    var file_thesis = "";
+                    if (res.Data.theses.file_thesis == null) {
+                        file_thesis += `<span class="badge badge-danger">Chưa nộp</span>`;
+                    } else {
+                        file_thesis += `<a href="/Admin/Theses/DownloadThese/${res.Data.theses.thesis_id}">Link download</a>`
+                    }
 
                     $('#code').text(res.Data.theses.code);
                     $('#topic_name').text(res.Data.topic.name);
@@ -235,7 +280,11 @@
                     $('#major').text(res.Data.major.name);
                     $('#council').text(res.Data.council.name);
                     $('#lecturer').text(res.Data.lecturer.full_name);
-
+                    $('#iS_status').html(status);
+                    $('#total_score').html(total_score);
+                    $('#result').html(result);
+                    $('#file_outline').html(file_outline);
+                    $('#file_thesis').html(file_thesis);
                 } else {
                     alert("Có lỗi");
                 }

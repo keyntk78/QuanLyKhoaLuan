@@ -328,11 +328,6 @@ namespace QuanLyKhoaLuan.Controllers
             var thesis = db.Theses.Find(thesis_Registration.thesis_id);
             var member_council = db.detail_Councils.Where(d=>d.council_id == thesis.council_id).ToList();
 
-            //foreach(var item in member_council)
-            //{
-            //    item.Lecturer.full_name
-            //}
-
             ViewBag.member_council = member_council;
             ViewBag.checkDate = check;
             ViewBag.id = thesis_Registration.thesis_registration_id;
@@ -390,6 +385,14 @@ namespace QuanLyKhoaLuan.Controllers
 
             string filePath = Server.MapPath(path);
             return File(filePath, "application/vnd.ms-excel", file_name);
+        }
+
+        public ActionResult DetailScore(Guid id)
+        {
+            var thesis = db.Theses.SingleOrDefault(x=>x.thesis_id== id);
+            var score = db.Scores.Where(x=>x.thesis_id == id).ToList();
+            ViewBag.Score = score;
+            return View(thesis);
         }
     }
 }

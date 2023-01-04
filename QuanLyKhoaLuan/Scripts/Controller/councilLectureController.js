@@ -88,13 +88,8 @@
 
         var keywork = $('#keywork').val();
         pageSize = $('#pageSize').val();
-        var active = $('#active').val();
-        var department_id = $('#select_department_id').val();
-        var major_id = $('#select_major_id').val();
-        var class_id = $('#select_class_id').val();
-        var shool_year_id = $('#select_shoolyear_id').val();
 
-        councilController.loadData(page, pageSize, keywork, shool_year_id);
+        councilLectureController.loadData(page, pageSize, keywork);
     },
 }
 

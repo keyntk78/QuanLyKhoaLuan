@@ -108,10 +108,19 @@
                                             }
                                             else
                                             {
-                                                <td>@Model.result</td>
+                                                if (@Model.result == 1)
+                                                {
+
+
+                                                    <td><span class="badge badge-success">Đạt</span></td>
+                                                }
+                                                else
+                                                {
+                                                    <td><span class="badge badge-success">Chưa đạt</span></td>
+                                                }
+                                                <td></td>
                                             }
                                         </tr>
-
                                     </tbody>
                                 </table>
                             </div>

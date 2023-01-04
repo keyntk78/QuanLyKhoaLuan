@@ -16,7 +16,7 @@
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="@Url.Action("Index", "CouncilLecture")">Danh sách hội đồng</a></li>
-                    <li class="breadcrumb-item"><a href="@Url.Action("ListThesis", "CouncilLecture")">Danh sách khóa luận chấm điểm</a></li>
+                    <li class="breadcrumb-item"><a href="@Url.Action("ListThesis", "CouncilLecture", new {id = Model.council_id})">Danh sách khóa luận chấm điểm</a></li>
                     <li class="breadcrumb-item active"><span>Thông tin khóa luận</span></li>
                 </ol>
             </div>
@@ -76,7 +76,20 @@
                                                 {
                                                     <p>@item.Lecturer.full_name</p>
                                                 }
+
+
                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Điềm giáo viên hướng dẫn:</td>
+                                            @if (Model.instructor_score != null)
+                                            {
+                                                <td>@Model.instructor_score</td>
+                                            }
+                                            else
+                                            {
+                                                <td><span class="badge badge-danger">Chưa có kết quả</span></td>
+                                            }
                                         </tr>
                                         <tr>
                                             <td>Tổng điểm:</td>

@@ -205,7 +205,7 @@
                             
                         } else {
                             status_result += `<span class="badge badge-info">Đã có</span>`;
-                            btn_detail += `<button class="btn btn-sm btn-secondary">Xem chi tiết</button>`;
+                            btn_detail += `<a href="@Url.Action("DetailScore", "PageStudent")/${res.Data.Thesis.thesis.thesis_id}" class="btn btn-sm btn-secondary">Xem chi tiết</a>`;
                         }
                         $('#status_result').html(status_result);
                         $('#btn_detail').html(btn_detail);
